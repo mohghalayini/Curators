@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    tools:context=".activity.gradeactivity">
+
+    <item
+        android:background="@drawable/waw"
+        android:id="@+id/iamAdmin"
+        android:title="I am an administrator"
+        app:showAsAction="never"
+        />
+
+
+
+    <item
+        android:background="@drawable/waw"
+        android:id="@+id/about"
+        android:title="About this app" />
+    <item
+        android:background="@drawable/waw"
+        android:id="@+id/settings"
+        android:title="Settings and Preferences"
+        app:showAsAction="never" />
+    />
+</menu>
