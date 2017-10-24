@@ -3,24 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     tools:context=".activity.gradeactivity">
 
     <item
         android:id="@+id/iamAdmin"
-        android:title="I am an administrator"
+        android:title="@string/i_am_an_administrator"
         app:showAsAction="never"
         />
-
-
-
     <item
         android:id="@+id/about"
         app:showAsAction="never"
-        android:title="About this app" />
+        android:title="@string/about_this_app" />
     <item
         android:id="@+id/settings"
-        android:title="Settings and Preferences"
+        android:title="@string/settings_and_preferences"
         app:showAsAction="never" />
-    />
+
 </menu>

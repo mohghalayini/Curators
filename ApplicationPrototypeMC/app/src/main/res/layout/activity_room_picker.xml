@@ -93,19 +93,20 @@
         android:layout_marginEnd="8dp" />
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbah"
+        android:id="@+id/toolbahinrp"
         android:layout_width="410dp"
         android:layout_height="56dp"
         app:popupTheme="@style/ThemeOverlay.YourApp"
-        android:layout_marginBottom="431dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="495dp"
         android:background="@drawable/waw"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="-13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="8dp" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button2"
