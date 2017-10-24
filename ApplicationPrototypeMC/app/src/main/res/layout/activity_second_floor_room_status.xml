@@ -67,7 +67,7 @@
         android:layout_marginEnd="8dp" />
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbah"
+        android:id="@+id/toolbahinsfr"
         android:layout_width="410dp"
         android:layout_height="56dp"
         android:layout_marginBottom="431dp"
@@ -78,8 +78,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:popupTheme="@style/ThemeOverlay.YourApp"
-        tools:layout_editor_absoluteX="8dp" />
+        android:layout_marginLeft="2dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
