@@ -62,5 +62,23 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.overflowmenu, menu);
         return true;
     }
+      @Override
+    public boolean onOptionsItemSelected(MenuItem item) {// this is the part the interprets clicks on the overfloow menu items
+        switch (item.getItemId()) {
+            case R.id.iamAdmin: {
+                Intent adminpriviledge =new Intent(this, admindata.class);
+                startActivity(adminpriviledge);
+
+                break;
+            }
+            case R.id.about: {
+
+
+                break;
+            }
+
+        }
+        return false;
+}
     
 }
