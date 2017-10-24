@@ -14,7 +14,7 @@ public class RoomPicker extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_picker);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbah); //used a toolbar because I prefer it over the default action bar
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbahinrp); //used a toolbar because I prefer it over the default action bar
         myToolbar.setTitle("");
         myToolbar.setSubtitle("");
         setSupportActionBar(myToolbar);

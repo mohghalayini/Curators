@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Application Prototype MC</string>
+    <string name="about_this_app">About this app</string>
+    <string name="i_am_an_administrator">I am an administrator</string>
+    <string name="settings_and_preferences">Settings and Preferences</string>
 </resources>
