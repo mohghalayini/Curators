@@ -5,11 +5,11 @@
     <string name="settings_and_preferences">Settings and Preferences</string>
 
         <string-array name="FloorArray">
-            <item><i><u>Select Floor</u></i> </item>
-            <item>2nd Floor </item>
-            <item>3rd Floor </item>
-            <item>4rth Floor </item>
-            <item>5th Floor </item>
-            <item>Any Floor </item>
+            <item><font size="18"><b><i><u>Select Floor</u></i> </b></font></item>
+            <item><font size="18"><b>The 5th Floor </b></font></item>
+            <item><font size="18"><b>The 4rth Floor </b></font></item>
+            <item><font size="18"><b>The 3rd Floor </b></font></item>
+            <item><font size="18"><b>The 2nd Floor </b></font></item>
+            <item><font size="18"><b>Any Floor </b></font></item>
         </string-array>
 </resources>
