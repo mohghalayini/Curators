@@ -17,6 +17,7 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
     TextView count;
     TextView rooms;
+    TextView errors;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
         count=(TextView) findViewById(R.id.counter);
         rooms=(TextView) findViewById(R.id.rooms);
+        errors=(TextView) findViewById(R.id.Totalerrors);
+        errors.setText("0");
         count.setText("0");
         firstthread();
         secondthread();
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class Title extends AsyncTask<Void, Void, Void> {
         String title="";
+        boolean errordetected=false;
 
 
 
@@ -47,19 +51,27 @@ public class MainActivity extends AppCompatActivity {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                 errordetected=true;
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
+            if (!errordetected){
             // Set title into TextView
             String c=count.getText().toString();
             int i=Integer.parseInt(c);
             c= Integer.toString(++i);
             count.setText(c);
-            rooms.setText(title);
-
+            rooms.setText(title);}
+            if(errordetected) {
+                errordetected = false;
+                String errortext = errors.getText().toString();
+                int errorcount = Integer.parseInt(errortext);
+                errortext = Integer.toString(++errorcount);
+                errors.setText(errortext);
+            }
         }
 
     }

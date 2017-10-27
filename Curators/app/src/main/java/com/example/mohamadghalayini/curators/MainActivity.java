@@ -83,3 +83,14 @@ public class MainActivity extends AppCompatActivity {
 }
     
 }
+
+/*
+Intent i = new Intent(this, FindAndroidActivity.class);
+i.putExtra("KEY",YourData);
+In FindAndroidActivity class
+
+Bundle extras = getIntent().getExtras();
+if(extras !=null) {
+    String value = extras.getString("KEY");
+}
+* */
