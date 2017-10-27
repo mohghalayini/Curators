@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Document doc = Jsoup.connect("http://gold-hold-183404.appspot.com/rooms/").get();
                 for(Element div : doc.select("h4")){
-                     title +=div.text();
+                     title +=div.text() +"\n ";
                   //  for(Element img : div.select("img")){
                    //     System.out.println(img.attr("src"));
                  //   }
