@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -36,20 +35,26 @@ public class MainActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Intent roomSwitcher = new Intent(MainActivity.this, RoomPopper.class);
                 if (position == 1) {
-                    Toast.makeText(MainActivity.this, Integer.toString(position), Toast.LENGTH_SHORT).show();
+                    roomSwitcher.putExtra("floorValue", "5th");
+                    startActivity(roomSwitcher);
                 }
                 if (position == 2) {
-                    Toast.makeText(MainActivity.this, Integer.toString(position), Toast.LENGTH_SHORT).show();
+                    roomSwitcher.putExtra("floorValue", "4rth");
+                    startActivity(roomSwitcher);
                 }
                 if (position == 3) {
-                    Toast.makeText(MainActivity.this, Integer.toString(position), Toast.LENGTH_SHORT).show();
+                    roomSwitcher.putExtra("floorValue", "3rd");
+                    startActivity(roomSwitcher);
                 }
                 if (position == 4) {
-                    Toast.makeText(MainActivity.this, Integer.toString(position), Toast.LENGTH_SHORT).show();
+                    roomSwitcher.putExtra("floorValue", "2nd");
+                    startActivity(roomSwitcher);
                 }
                 if (position == 5) {
-                    Toast.makeText(MainActivity.this, Integer.toString(position), Toast.LENGTH_SHORT).show();
+                    roomSwitcher.putExtra("floorValue", "Any");
+                    startActivity(roomSwitcher);
                 }
             }
 
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {// this is the part the interprets clicks on the overfloow menu items
         switch (item.getItemId()) {
             case R.id.iamAdmin: {
-                Intent adminpage =new Intent(this, admindata.class);
+                Intent adminpage =new Intent(this, Admindata.class);
                 startActivity(adminpage);
 
                 break;

@@ -3,23 +3,36 @@ package com.example.mohamadghalayini.curators;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class admindata extends AppCompatActivity {
-    Context thisthing= this;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.IOException;
+
+public class Admindata extends AppCompatActivity {
+    Context thisthing = this;
+    ArrayAdapter roomAdapterAdmin;
+    String[]allRooms;
+    String outputArray[];
+    ListView adminListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admindata);
         login();
-
+        adminListView= (ListView) findViewById(R.id.adminListView);
     }
 
     public void login() {
@@ -38,18 +51,26 @@ public class admindata extends AppCompatActivity {
                 ((ViewGroup) findViewById(R.id.mainlayout)).setVisibility(View.VISIBLE);
 
                 String thepassword = password.getText().toString();
+                String theusername = username.getText().toString();
                 findViewById(R.id.Password).setVisibility(View.INVISIBLE);
                 findViewById(R.id.username).setVisibility(View.INVISIBLE);
-                dialog.dismiss();
+                if (theusername.equals("1") && thepassword.equals("2")) {
+                    dialog.dismiss();
+                    new RoomFetcher().execute();
+                }
+                else {
+                    Intent begone = new Intent(thisthing, MainActivity.class);
+                    startActivity(begone);
+                    Toast.makeText(thisthing, "Wrong Username or Password try again", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ((ViewGroup) findViewById(R.id.mainlayout)).setVisibility(View.VISIBLE);
-                Toast.makeText(admindata.this, "begone thot", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
-                Intent begone= new Intent(thisthing, MainActivity.class);
+                Intent begone = new Intent(thisthing, MainActivity.class);
                 startActivity(begone);
             }
         });
@@ -57,4 +78,52 @@ public class admindata extends AppCompatActivity {
 
         builder.show();
     }
+
+
+    public void roomDisplayer(){
+        if(allRooms!=null){
+           outputArray= allRooms.clone();
+            String actualRoom;
+            String roomCurrentSize;
+            String roomCapacity;
+            for  (int i=0;i<allRooms.length;i++){
+                String str = allRooms[i];
+                actualRoom = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
+                str= str.substring(str.indexOf(";") + 1, str.length());
+                roomCurrentSize = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
+                str= str.substring(str.indexOf(";") + 1, str.length());
+                roomCapacity =str.substring(str.indexOf(":") + 1, str.length());
+                outputArray[i]="Room: "+actualRoom+" Current Student Count: "+roomCurrentSize+" Max Capacity: "+roomCapacity;
+
+            }
+
+           roomAdapterAdmin= new ArrayAdapter(thisthing,R.layout.admin_listview, outputArray);
+            adminListView.setAdapter(roomAdapterAdmin);
+
+        }
+    }
+    private class RoomFetcher extends AsyncTask<Void, Void, Void> {
+        String rooms = "";
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                Document doc = Jsoup.connect("http://gold-hold-183404.appspot.com/rooms/").get();
+                for (Element div : doc.select("h4")) {
+                    rooms += div.text() + "/";
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            allRooms = rooms.split("/");
+            roomDisplayer();
+        }
+    }
 }
+
+

@@ -4,12 +4,12 @@
     <string name="i_am_an_administrator">I am an administrator</string>
     <string name="settings_and_preferences">Settings and Preferences</string>
 
-        <string-array name="FloorArray">
-            <item><font size="18"><b><i><u>Select Floor</u></i> </b></font></item>
-            <item><font size="18"><b>The 5th Floor </b></font></item>
-            <item><font size="18"><b>The 4rth Floor </b></font></item>
-            <item><font size="18"><b>The 3rd Floor </b></font></item>
-            <item><font size="18"><b>The 2nd Floor </b></font></item>
-            <item><font size="18"><b>Any Floor </b></font></item>
-        </string-array>
+    <string-array name="FloorArray">
+        <item><font size="18"><b><i><u>Select Floor</u></i> </b></font></item>
+        <item><font size="18"><b>The 5th Floor </b></font></item>
+        <item><font size="18"><b>The 4rth Floor </b></font></item>
+        <item><font size="18"><b>The 3rd Floor </b></font></item>
+        <item><font size="18"><b>The 2nd Floor </b></font></item>
+        <item><font size="18"><b>Any Floor </b></font></item>
+    </string-array>
 </resources>
