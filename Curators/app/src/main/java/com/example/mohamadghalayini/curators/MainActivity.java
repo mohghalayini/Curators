@@ -37,24 +37,29 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Intent roomSwitcher = new Intent(MainActivity.this, RoomPopper.class);
                 if (position == 1) {
-                    roomSwitcher.putExtra("floorValue", "5th");
+                    roomSwitcher.putExtra("floorValue", "5");
                     startActivity(roomSwitcher);
+                    setupSpinner();
                 }
                 if (position == 2) {
-                    roomSwitcher.putExtra("floorValue", "4rth");
+                    roomSwitcher.putExtra("floorValue", "4");
                     startActivity(roomSwitcher);
+                    setupSpinner();
                 }
                 if (position == 3) {
-                    roomSwitcher.putExtra("floorValue", "3rd");
+                    roomSwitcher.putExtra("floorValue", "3");
                     startActivity(roomSwitcher);
+                    setupSpinner();
                 }
                 if (position == 4) {
-                    roomSwitcher.putExtra("floorValue", "2nd");
+                    roomSwitcher.putExtra("floorValue", "2");
                     startActivity(roomSwitcher);
+                    setupSpinner();
                 }
                 if (position == 5) {
                     roomSwitcher.putExtra("floorValue", "Any");
                     startActivity(roomSwitcher);
+                    setupSpinner();
                 }
             }
 

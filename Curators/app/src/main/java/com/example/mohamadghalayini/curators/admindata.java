@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,19 +21,23 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Admindata extends AppCompatActivity {
     Context thisthing = this;
     ArrayAdapter roomAdapterAdmin;
-    String[]allRooms;
-    String outputArray[];
+    String[] allRooms;
+    ArrayList<String> outputArray = new ArrayList<String>();
     ListView adminListView;
+    LinearLayout headerHolder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admindata);
         login();
-        adminListView= (ListView) findViewById(R.id.adminListView);
+        adminListView = (ListView) findViewById(R.id.adminListView);
+        headerHolder = (LinearLayout) findViewById(R.id.headerHolder);
     }
 
     public void login() {
@@ -57,8 +62,8 @@ public class Admindata extends AppCompatActivity {
                 if (theusername.equals("1") && thepassword.equals("2")) {
                     dialog.dismiss();
                     new RoomFetcher().execute();
-                }
-                else {
+                    headerHolder.setVisibility(View.VISIBLE);
+                } else {
                     Intent begone = new Intent(thisthing, MainActivity.class);
                     startActivity(begone);
                     Toast.makeText(thisthing, "Wrong Username or Password try again", Toast.LENGTH_SHORT).show();
@@ -80,28 +85,30 @@ public class Admindata extends AppCompatActivity {
     }
 
 
-    public void roomDisplayer(){
-        if(allRooms!=null){
-           outputArray= allRooms.clone();
+    public void roomDisplayer() {
+        if (allRooms != null) {
             String actualRoom;
             String roomCurrentSize;
             String roomCapacity;
-            for  (int i=0;i<allRooms.length;i++){
+            for (int i = 0; i < allRooms.length; i++) {
                 String str = allRooms[i];
-                actualRoom = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
-                str= str.substring(str.indexOf(";") + 1, str.length());
-                roomCurrentSize = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
-                str= str.substring(str.indexOf(";") + 1, str.length());
-                roomCapacity =str.substring(str.indexOf(":") + 1, str.length());
-                outputArray[i]="Room: "+actualRoom+" Current Student Count: "+roomCurrentSize+" Max Capacity: "+roomCapacity;
-
+                try {
+                    actualRoom = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
+                    str = str.substring(str.indexOf(";") + 1, str.length());
+                    roomCurrentSize = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
+                    str = str.substring(str.indexOf(";") + 1, str.length());
+                    roomCapacity = str.substring(str.indexOf(":") + 1, str.length());
+                    outputArray.add(actualRoom + "                       " + roomCurrentSize + "                           " + roomCapacity);
+                } catch (Exception e) {
+                }
             }
 
-           roomAdapterAdmin= new ArrayAdapter(thisthing,R.layout.admin_listview, outputArray);
+            roomAdapterAdmin = new ArrayAdapter(thisthing, R.layout.admin_listview, outputArray);
             adminListView.setAdapter(roomAdapterAdmin);
 
         }
     }
+
     private class RoomFetcher extends AsyncTask<Void, Void, Void> {
         String rooms = "";
 
