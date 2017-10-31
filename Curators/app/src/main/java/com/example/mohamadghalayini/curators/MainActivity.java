@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {// this is the part the interprets clicks on the overfloow menu items
         switch (item.getItemId()) {
             case R.id.iamAdmin: {
-                Intent adminpage =new Intent(this, Admindata.class);
+                Intent adminpage =new Intent(this, AdminData.class);
                 startActivity(adminpage);
 
                 break;

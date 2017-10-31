@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Admindata" />
+        <activity android:name=".AdminData" />
         <activity android:name=".RoomPopper"></activity>
     </application>
 
