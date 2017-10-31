@@ -23,7 +23,7 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Admindata extends AppCompatActivity {
+public class AdminData extends AppCompatActivity {
     Context thisthing = this;
     ArrayAdapter roomAdapterAdmin;
     String[] allRooms;
@@ -39,7 +39,11 @@ public class Admindata extends AppCompatActivity {
         adminListView = (ListView) findViewById(R.id.adminListView);
         headerHolder = (LinearLayout) findViewById(R.id.headerHolder);
     }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        login();
+    }
     public void login() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
