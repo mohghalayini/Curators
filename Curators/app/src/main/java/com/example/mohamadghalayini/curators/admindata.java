@@ -68,7 +68,7 @@ public class AdminData extends AppCompatActivity {
                     new RoomFetcher().execute();
                     headerHolder.setVisibility(View.VISIBLE);
                 } else {
-                    Intent begone = new Intent(thisthing, MainActivity.class);
+                    Intent begone = new Intent(thisthing, RoomPopper.class);
                     startActivity(begone);
                     Toast.makeText(thisthing, "Wrong Username or Password try again", Toast.LENGTH_SHORT).show();
                 }
@@ -79,7 +79,7 @@ public class AdminData extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 ((ViewGroup) findViewById(R.id.mainlayout)).setVisibility(View.VISIBLE);
                 dialog.cancel();
-                Intent begone = new Intent(thisthing, MainActivity.class);
+                Intent begone = new Intent(thisthing, RoomPopper.class);
                 startActivity(begone);
             }
         });

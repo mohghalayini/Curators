@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".RoomPopper">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,7 +17,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".AdminData" />
-        <activity android:name=".RoomPopper"></activity>
     </application>
 
 </manifest>

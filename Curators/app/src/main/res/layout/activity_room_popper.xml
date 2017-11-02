@@ -13,22 +13,38 @@ tools:context="com.example.mohamadghalayini.curators.RoomPopper">
 
     ]]>
 
-    <ListView
-        android:id="@+id/firstListView"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/roomPoppertoolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:background="@color/concordiared"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
 
-    <ListView
-        android:id="@+id/secondListView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-    <ListView
-        android:id="@+id/thirdListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_height="465dp"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/firstListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/secondListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/thirdListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -36,8 +52,8 @@ tools:context="com.example.mohamadghalayini.curators.RoomPopper">
 
         <LinearLayout
             android:id="@+id/legend"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -49,9 +65,9 @@ tools:context="com.example.mohamadghalayini.curators.RoomPopper">
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/Vanu"
+                android:text="Empty"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="Empty" />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/mid"
