@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="concordiared">#932339</color>
     <color name="Vanu">#02af9b</color>
+    <color name="Grey">#727474</color>
+    <color name="Anger">#d40217</color>
     <color name="Amber">#E76506</color>
     <color name="SummerGreen">#2a9303</color>
 </resources>

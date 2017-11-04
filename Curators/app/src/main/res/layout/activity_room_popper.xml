@@ -5,13 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/centeredlogo"
-    tools:context="com.example.mohamadghalayini.curators.MainActivity"><![CDATA[
+    tools:context="com.example.mohamadghalayini.curators.RoomPopper">
 
-
-tools:context="com.example.mohamadghalayini.curators.RoomPopper">
-
-
-    ]]>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/roomPoppertoolbar"
@@ -28,22 +23,122 @@ tools:context="com.example.mohamadghalayini.curators.RoomPopper">
         android:orientation="vertical">
 
         <ListView
-            android:id="@+id/firstListView"
+            android:id="@+id/secondFloorFirstListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
         <ListView
-            android:id="@+id/secondListView"
+            android:id="@+id/secondFloorSecondListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
         <ListView
-            android:id="@+id/thirdListView"
+            android:id="@+id/secondFloorThirdListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/secondFloorFourthListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/secondFloorFifthListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/thirdFloorFirstListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+        <ListView
+            android:id="@+id/thirdFloorSecondListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/thirdFloorThirdListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/thirdFloorFourthListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/thirdFloorFifthListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/fourthFloorFirstListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/fourthFloorSecondListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+        <ListView
+            android:id="@+id/fourthFloorThirdListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/fourthFloorFourthListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/fourthFloorFifthListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/fifthFloorFirstListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/fifthFloorSecondListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/fifthFloorthirdListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+        <ListView
+            android:id="@+id/fifthFloorFourthListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/fifthFloorFifthListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
 
     </LinearLayout>
 
@@ -62,36 +157,62 @@ tools:context="com.example.mohamadghalayini.curators.RoomPopper">
 
             <Button
                 android:id="@+id/left"
-                android:layout_width="150dp"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/Vanu"
                 android:text="Empty"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/mid"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/SummerGreen"
                 android:text="Normal"
                 android:textColor="#ffff"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/right"
-                android:layout_width="150dp"
+                android:id="@+id/mostlyBusy"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/Amber"
-                android:text="Mostly Busy"
+                android:text="Busy"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="#ffff"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/full"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/Anger"
+                android:text="Full"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="#ffff"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/unavailable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/Grey"
+                android:text="Unavailable"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="#ffff"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

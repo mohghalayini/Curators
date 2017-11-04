@@ -1,5 +1,6 @@
 package com.example.mohamadghalayini.curators;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,26 +19,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class RoomPopper extends AppCompatActivity {
-    ArrayAdapter[] roomAdapters = new ArrayAdapter[3];
-    ListView[] listViews = new ListView[3];
+    ListView[] listViews = new ListView[20];
     String[] allRooms;
-    ArrayList<String> light = new ArrayList<String>();
-    ArrayList<String> normal = new ArrayList<String>();
-    ArrayList<String> medium = new ArrayList<String>();
+    ArrayList<ArrayList<ArrayList<String>>> floorContainer;//floor container
     String floorValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_popper);
+        initialiseLists(this);
+        initialiseContainers();
         Toolbar myToolbar = (Toolbar) findViewById(R.id.roomPoppertoolbar); //used a toolbar because I prefer it over the default action bar
         myToolbar.setTitle("");
         myToolbar.setSubtitle("");
         setSupportActionBar(myToolbar);
         decoder();
-        //roomAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, outputarray);// here is my adapter for the listview that will hold my courses
-        // placeholder = (ListView) findViewById(R.id.mlv);
-        // placeholder.setAdapter(myadapter);
     }
 
     public void decoder() {
@@ -47,7 +44,6 @@ public class RoomPopper extends AppCompatActivity {
 
     public void roomDisplayer() {
         if (allRooms != null) {
-            String[] outputArray = new String[allRooms.length];
             String actualRoom = "";
             String roomCurrentSize = "";
             String roomCapacity = "";
@@ -59,29 +55,25 @@ public class RoomPopper extends AppCompatActivity {
                     roomCurrentSize = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     str = str.substring(str.indexOf(";") + 1, str.length());
                     roomCapacity = str.substring(str.indexOf(":") + 1, str.length());
-                    sort(actualRoom, roomCurrentSize, roomCapacity, floorValue);
+                    int floor = Integer.parseInt(actualRoom.substring(0, 1)) - 2;
+
+                    sort(actualRoom, roomCurrentSize, roomCapacity, floorValue, floor);
                 } catch (Exception e) {
                 }
             }
-            if (light != null) {
-                listViews[0] = (ListView) findViewById(R.id.firstListView);
-                roomAdapters[0] = new ArrayAdapter<String>(this, R.layout.empty_listview, light);
-                listViews[0].setAdapter(roomAdapters[0]);
-            }
-            if (normal != null) {
-                listViews[1] = (ListView) findViewById(R.id.secondListView);
-                roomAdapters[1] = new ArrayAdapter<String>(this, R.layout.normal_listview, normal);
-                listViews[1].setAdapter(roomAdapters[1]);
-            }
-            if (medium != null) {
-                listViews[2] = (ListView) findViewById(R.id.thirdListView);
-                roomAdapters[2] = new ArrayAdapter<String>(this, R.layout.busy_listview, medium);
-                listViews[2].setAdapter(roomAdapters[2]);
+            int counter = 0;
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 5; j++) {
+                    if (floorContainer.get(i).get(j) != null) {
+                        listViews[counter].setAdapter(findAdapter(i, j));
+                    }
+                    counter++;
+                }
             }
         }
     }
 
-    public void sort(String Room, String Size, String Capacity, String Preference) {
+    public void sort(String Room, String Size, String Capacity, String Preference, int floor) {
 
         float size = Integer.parseInt(Size);
         float capacity = Integer.parseInt(Capacity);
@@ -91,11 +83,13 @@ public class RoomPopper extends AppCompatActivity {
         }
         if (Preference.equals("Any") || Preference.equals(Room.substring(0, 1))) {
             if (ratio < 0.25) {
-                light.add("Room: " + Room);
+                floorContainer.get(floor).get(0).add("Room: " + Room);
             } else if (ratio < 0.5) {
-                normal.add("Room: " + Room);
+                floorContainer.get(floor).get(1).add("Room: " + Room);
             } else if (ratio < 0.75) {
-                medium.add("Room: " + Room);
+                floorContainer.get(floor).get(2).add("Room: " + Room);
+            } else if (ratio <= 1) {
+                floorContainer.get(floor).get(3).add("Room: " + Room);
             }
         }
     }
@@ -122,15 +116,17 @@ public class RoomPopper extends AppCompatActivity {
             roomDisplayer();
         }
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {//calls the menu for toolbar
         getMenuInflater().inflate(R.menu.overflowmenu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {// this is the part the interprets clicks on the overfloow menu items
         switch (item.getItemId()) {
             case R.id.iamAdmin: {
-                Intent adminpage =new Intent(this, AdminData.class);
+                Intent adminpage = new Intent(this, AdminData.class);
                 startActivity(adminpage);
 
                 break;
@@ -142,5 +138,65 @@ public class RoomPopper extends AppCompatActivity {
 
         }
         return false;
+    }
+
+    public ArrayAdapter<String> findAdapter(int floor, int condition) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.empty_listview, floorContainer.get(floor).get(condition));
+        if (condition == 1) {
+            adapter = new ArrayAdapter<String>(this, R.layout.normal_listview, floorContainer.get(floor).get(condition));
+        } else if (condition == 2) {
+            adapter = new ArrayAdapter<String>(this, R.layout.busy_listview, floorContainer.get(floor).get(condition));
+        } else if (condition == 3) {
+            adapter = new ArrayAdapter<String>(this, R.layout.full_listview, floorContainer.get(floor).get(condition));
+        } else if (condition == 4) {
+            adapter = new ArrayAdapter<String>(this, R.layout.unavailable_listview, floorContainer.get(floor).get(condition));
+        }
+        return adapter;
+    }
+
+    public void initialiseLists(final Context thiscontext) {
+        new Thread(new Runnable() {
+            public void run() {
+
+                listViews[0] = (ListView) findViewById(R.id.secondFloorFirstListView);
+                listViews[1] = (ListView) findViewById(R.id.secondFloorSecondListView);
+                listViews[2] = (ListView) findViewById(R.id.secondFloorThirdListView);
+                listViews[3] = (ListView) findViewById(R.id.secondFloorFourthListView);
+                listViews[4] = (ListView) findViewById(R.id.secondFloorFifthListView);
+                //3rd floor
+                listViews[5] = (ListView) findViewById(R.id.thirdFloorFirstListView);
+                listViews[6] = (ListView) findViewById(R.id.thirdFloorSecondListView);
+                listViews[7] = (ListView) findViewById(R.id.thirdFloorThirdListView);
+                listViews[8] = (ListView) findViewById(R.id.thirdFloorFourthListView);
+                listViews[9] = (ListView) findViewById(R.id.thirdFloorFifthListView);
+                //4rth floor
+                listViews[10] = (ListView) findViewById(R.id.fourthFloorFirstListView);
+                listViews[11] = (ListView) findViewById(R.id.fourthFloorSecondListView);
+                listViews[12] = (ListView) findViewById(R.id.fourthFloorThirdListView);
+                listViews[13] = (ListView) findViewById(R.id.fourthFloorFourthListView);
+                listViews[14] = (ListView) findViewById(R.id.fourthFloorFifthListView);
+                //5th floor
+                listViews[15] = (ListView) findViewById(R.id.fifthFloorFirstListView);
+                listViews[16] = (ListView) findViewById(R.id.fifthFloorSecondListView);
+                listViews[17] = (ListView) findViewById(R.id.fifthFloorthirdListView);
+                listViews[18] = (ListView) findViewById(R.id.fifthFloorFourthListView);
+                listViews[19] = (ListView) findViewById(R.id.fifthFloorFifthListView);
+            }
+        }).start();
+
+    }
+
+    public void initialiseContainers() {
+        new Thread(new Runnable() {
+            public void run() {
+                floorContainer = new ArrayList<ArrayList<ArrayList<String>>>();
+                for (int i = 0; i < 4; i++) {
+                    floorContainer.add(new ArrayList<ArrayList<String>>());
+                    for (int j = 0; j < 5; j++) {
+                        floorContainer.get(i).add(new ArrayList<String>());
+                    }
+                }
+            }
+        }).start();
     }
 }

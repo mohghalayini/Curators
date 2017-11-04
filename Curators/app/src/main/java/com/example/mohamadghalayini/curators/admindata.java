@@ -45,7 +45,7 @@ public class AdminData extends AppCompatActivity {
         login();
     }
     public void login() {
-        if (statusesAndPreferences.getAdminStatus()== null) {
+        if (statusesAndPreferences.getAdminStatus().equals("basic")) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(false);

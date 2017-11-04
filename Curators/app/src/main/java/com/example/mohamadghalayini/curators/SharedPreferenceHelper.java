@@ -26,7 +26,7 @@ public class SharedPreferenceHelper {
     }
     public String getAdminStatus()
     {
-        return sharedPreferences.getString("adminStatus", null);
+        return sharedPreferences.getString("adminStatus", "basic");
     }
 
 }
