@@ -1,0 +1,143 @@
+#define PIR_MOTION_SENSOR1 6//Use pin 8 to receive the signal from the module
+#define LED1    8//the Grove - LED is connected to D4 of Arduino
+#define PIR_MOTION_SENSOR2 7
+#define LED2 9
+int counter = 0;
+
+void setup()
+{
+    Serial.begin(9600);
+    //pinsInit();
+    pinMode(PIR_MOTION_SENSOR1, INPUT);
+    pinMode(PIR_MOTION_SENSOR2, INPUT);
+    pinMode(LED1,OUTPUT);
+    pinMode(LED2,OUTPUT);
+}
+
+void loop()
+{
+  //delay(250);
+  Serial.println("Counter  ");
+  Serial.println(counter);
+  boolean bool_test1;
+  boolean bool_test2;
+  
+    if(entered())//if it detects the moving people?
+    {
+      bool_test1 = true;
+    }
+    else if(!entered())
+      bool_test1 = false;
+
+    if(exitted())//if it detects the moving people?
+    {
+      bool_test2 = true;
+    }
+    else if(!exitted())
+      bool_test2 = false;
+
+  switchLED1(bool_test1);
+  switchLED2(bool_test2);
+  delay(1100);
+}
+
+void switchLED1(boolean b)
+{
+  if(b)
+  {
+    digitalWrite(LED1,HIGH);
+    Serial.println("LED1 ON");
+  }
+  else
+  {
+    digitalWrite(LED1,LOW);
+    Serial.println("LED1 OFF");
+  }
+}
+
+void switchLED2(boolean b)
+{
+  if(b)
+  {
+    digitalWrite(LED2,HIGH);
+    Serial.println("LED2 ON");
+  }
+  else
+  {
+    digitalWrite(LED2,LOW);
+    Serial.println("LED2 OFF");
+  }
+}
+
+boolean entered()
+{
+  int sensor1 = digitalRead(PIR_MOTION_SENSOR1);
+  int sensor2 = digitalRead(PIR_MOTION_SENSOR2);
+  if(sensor1 == HIGH && sensor2 == LOW)
+   {
+      Serial.println("Entering...");
+      delay(700);
+      //Serial.println("Updating Sensor1...");
+      //int sensor1_updated = digitalRead(PIR_MOTION_SENSOR1);
+      Serial.println("Updating Sensor2...");
+      //delay(500);
+      int sensor2_updated = digitalRead(PIR_MOTION_SENSOR2);
+      delay(700);
+      //if(sensor1_updated == HIGH && sensor2_updated == HIGH)
+      if(sensor2_updated == HIGH)
+      {
+        Serial.println("Entered!!");
+        counter++;
+        Serial.println("Counter  ");
+        Serial.println(counter);
+        sensor2_updated = LOW;
+        return true;
+      }
+    else
+      {
+         Serial.println("Entering Cancelled.....");
+         return false;
+      }
+   }
+   else
+         return false;
+   sensor1 = LOW;
+   sensor2 = LOW;
+    
+}
+
+boolean exitted()
+{
+  int sensor1 = digitalRead(PIR_MOTION_SENSOR1);
+  int sensor2 = digitalRead(PIR_MOTION_SENSOR2);
+  if(sensor1 == LOW && sensor2 == HIGH)
+   {
+      Serial.println("Exitting...");
+      delay(700);
+      Serial.println("Updating Sensor1...");
+      int sensor1_updated = digitalRead(PIR_MOTION_SENSOR1);
+      //Serial.println("Updating Sensor2...");
+      //delay(500);
+      //int sensor2_updated = digitalRead(PIR_MOTION_SENSOR2);
+      delay(700);
+      //if(sensor1_updated == HIGH && sensor2_updated == HIGH)
+      if(sensor1_updated == HIGH)
+      {
+        Serial.println("Exitted!!");
+        counter--;
+        Serial.println("Counter  ");
+        Serial.println(counter);
+        sensor1_updated = LOW;
+        return true;
+      }
+    else
+      {
+         Serial.println("Exitting Cancelled.....");
+         return false;
+      }
+   }
+   else
+      return false;
+   sensor1 = LOW;
+   sensor2 = LOW;
+}
