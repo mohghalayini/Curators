@@ -3,13 +3,10 @@
     <string name="about_this_app">About this app</string>
     <string name="i_am_an_administrator">I am an administrator</string>
     <string name="settings_and_preferences">Settings and Preferences</string>
-
-    <string-array name="FloorArray">
-        <item><font size="18"><b><i><u>Select Floor</u></i> </b></font></item>
-        <item><font size="18"><b>The 5th Floor </b></font></item>
-        <item><font size="18"><b>The 4rth Floor </b></font></item>
-        <item><font size="18"><b>The 3rd Floor </b></font></item>
-        <item><font size="18"><b>The 2nd Floor </b></font></item>
-        <item><font size="18"><b>Any Floor </b></font></item>
-    </string-array>
+    <string name="_3rd_floor">3rd Floor</string>
+    <string name="unavailable">Closed</string>
+    <string name="show_3rd_floor">Show 3rd Floor</string>
+    <string name="show_2nd_floor">Show 2nd Floor</string>
+    <string name="show_4th_floor">Show 4th Floor</string>
+    <string name="show_5th_floor">Show 5th Floor</string>
 </resources>

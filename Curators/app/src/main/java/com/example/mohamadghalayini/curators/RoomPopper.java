@@ -8,8 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,6 +25,9 @@ import java.util.ArrayList;
 public class RoomPopper extends AppCompatActivity {
     ListView[] listViews = new ListView[20];
     String[] allRooms;
+    SharedPreferenceHelper preferences;
+    char[] roomPreference = new char[4];
+    TextView[] floorTexts = new TextView[4];
     ArrayList<ArrayList<ArrayList<String>>> floorContainer;//floor container
     String floorValue;
 
@@ -34,6 +41,8 @@ public class RoomPopper extends AppCompatActivity {
         myToolbar.setTitle("");
         myToolbar.setSubtitle("");
         setSupportActionBar(myToolbar);
+        preferences = new SharedPreferenceHelper(this);
+        getRoomStatuses();
         decoder();
     }
 
@@ -44,9 +53,10 @@ public class RoomPopper extends AppCompatActivity {
 
     public void roomDisplayer() {
         if (allRooms != null) {
-            String actualRoom = "";
-            String roomCurrentSize = "";
-            String roomCapacity = "";
+            String actualRoom;
+            String roomCurrentSize;
+            String roomCapacity;
+            String roomStatus;
             for (int i = 0; i < allRooms.length; i++) {
                 String str = allRooms[i];
                 try {
@@ -54,26 +64,20 @@ public class RoomPopper extends AppCompatActivity {
                     str = str.substring(str.indexOf(";") + 1, str.length());
                     roomCurrentSize = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     str = str.substring(str.indexOf(";") + 1, str.length());
-                    roomCapacity = str.substring(str.indexOf(":") + 1, str.length());
+                    roomCapacity = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
+                    str = str.substring(str.indexOf(";") + 1, str.length());
+                    roomStatus = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     int floor = Integer.parseInt(actualRoom.substring(0, 1)) - 2;
 
-                    sort(actualRoom, roomCurrentSize, roomCapacity, floorValue, floor);
+                    sort(actualRoom, roomCurrentSize, roomCapacity, floorValue, floor, roomStatus);
                 } catch (Exception e) {
                 }
             }
-            int counter = 0;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 5; j++) {
-                    if (floorContainer.get(i).get(j) != null) {
-                        listViews[counter].setAdapter(findAdapter(i, j));
-                    }
-                    counter++;
-                }
-            }
+            connectTheViews();
         }
     }
 
-    public void sort(String Room, String Size, String Capacity, String Preference, int floor) {
+    public void sort(String Room, String Size, String Capacity, String Preference, int floor, String status) {
 
         float size = Integer.parseInt(Size);
         float capacity = Integer.parseInt(Capacity);
@@ -81,7 +85,7 @@ public class RoomPopper extends AppCompatActivity {
         if (size > 0) {
             ratio = size / capacity;
         }
-        if (Preference.equals("Any") || Preference.equals(Room.substring(0, 1))) {
+        if (status.equals("Active")) {
             if (ratio < 0.25) {
                 floorContainer.get(floor).get(0).add("Room: " + Room);
             } else if (ratio < 0.5) {
@@ -91,6 +95,8 @@ public class RoomPopper extends AppCompatActivity {
             } else if (ratio <= 1) {
                 floorContainer.get(floor).get(3).add("Room: " + Room);
             }
+        } else if (status.equals("Inactive")) {
+            floorContainer.get(floor).get(4).add("Room: " + Room);
         }
     }
 
@@ -119,6 +125,11 @@ public class RoomPopper extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {//calls the menu for toolbar
         getMenuInflater().inflate(R.menu.overflowmenu, menu);
+        for (int i = 0; i < 4; i++) {
+            if (roomPreference[i] == '1') {
+                menu.getItem(i + 2).setChecked(true);
+            }
+        }
         return true;
     }
 
@@ -133,6 +144,58 @@ public class RoomPopper extends AppCompatActivity {
             }
             case R.id.about: {
 
+                break;
+            }
+            case R.id.secondFloorCheck: {
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    roomPreference[0] = '0';
+                    preferences.saveRoomPreference(new String(roomPreference));
+                } else {
+                    item.setChecked(true);
+                    roomPreference[0] = '1';
+                    preferences.saveRoomPreference(new String(roomPreference));
+                }
+                connectTheViews();
+                break;
+            }
+            case R.id.thirdFloorCheck: {
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    roomPreference[1] = '0';
+                    preferences.saveRoomPreference(new String(roomPreference));
+                } else {
+                    item.setChecked(true);
+                    roomPreference[1] = '1';
+                    preferences.saveRoomPreference(new String(roomPreference));
+                }
+                connectTheViews();
+                break;
+            }
+            case R.id.fourthFloorCheck: {
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    roomPreference[2] = '0';
+                    preferences.saveRoomPreference(new String(roomPreference));
+                } else {
+                    item.setChecked(true);
+                    roomPreference[2] = '1';
+                    preferences.saveRoomPreference(new String(roomPreference));
+                }
+                connectTheViews();
+                break;
+            }
+            case R.id.fifthFloorCheck: {
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    roomPreference[3] = '0';
+                    preferences.saveRoomPreference(new String(roomPreference));
+                } else {
+                    item.setChecked(true);
+                    roomPreference[3] = '1';
+                    preferences.saveRoomPreference(new String(roomPreference));
+                }
+                connectTheViews();
                 break;
             }
 
@@ -181,6 +244,10 @@ public class RoomPopper extends AppCompatActivity {
                 listViews[17] = (ListView) findViewById(R.id.fifthFloorthirdListView);
                 listViews[18] = (ListView) findViewById(R.id.fifthFloorFourthListView);
                 listViews[19] = (ListView) findViewById(R.id.fifthFloorFifthListView);
+                floorTexts[0] = (TextView) findViewById(R.id.secondFloorText);
+                floorTexts[1] = (TextView) findViewById(R.id.thirdFloorText);
+                floorTexts[2] = (TextView) findViewById(R.id.fourthFloorText);
+                floorTexts[3] = (TextView) findViewById(R.id.fifthFloorText);
             }
         }).start();
 
@@ -198,5 +265,68 @@ public class RoomPopper extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
+
+    public void getRoomStatuses() {
+        String pref = preferences.getRoomPreference();
+        roomPreference[0] = pref.charAt(0);
+        roomPreference[1] = pref.charAt(1);
+        roomPreference[2] = pref.charAt(2);
+        roomPreference[3] = pref.charAt(3);
+
+    }
+
+    public void connectTheViews() {
+        int counter = 0;
+        for (int i = 0; i < 4; i++) {
+            if (floorContainer.get(i).get(0).size() != 0 || floorContainer.get(i).get(1).size() != 0 || floorContainer.get(i).get(2).size() != 0 || floorContainer.get(i).get(3).size() != 0) {
+                floorTexts[i].setVisibility(View.VISIBLE);
+            }
+            if (roomPreference[i] == '1') {
+                if (floorContainer.get(i).get(0).size() != 0 || floorContainer.get(i).get(1).size() != 0 || floorContainer.get(i).get(2).size() != 0 || floorContainer.get(i).get(3).size() != 0) {
+                    floorTexts[i].setVisibility(View.VISIBLE);
+                } else floorTexts[i].setVisibility(View.GONE);
+
+                for (int j = 0; j < 5; j++) {
+                    counter = (5 * i) + j;
+                    if (floorContainer.get(i).get(j).size() != 0) {
+                        listViews[counter].setVisibility(View.VISIBLE);
+                        listViews[counter].setAdapter(findAdapter(i, j));
+                        setListViewHeightBasedOnChildren(listViews[counter]);
+                    }
+
+                }
+            } else {
+                floorTexts[i].setVisibility(View.GONE);
+                for (int j = 0; j < 5; j++) {
+                    counter = (5 * i) + j;
+                    if (floorContainer.get(i).get(j).size() != 0) {
+                        listViews[counter].setVisibility(View.GONE);
+
+                    }
+
+                }
+            }
+
+        }
     }
 }

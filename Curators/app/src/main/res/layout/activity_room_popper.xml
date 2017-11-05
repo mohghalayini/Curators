@@ -7,7 +7,6 @@
     android:background="@drawable/centeredlogo"
     tools:context="com.example.mohamadghalayini.curators.RoomPopper">
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/roomPoppertoolbar"
         android:layout_width="match_parent"
@@ -17,151 +16,245 @@
         android:theme="?attr/actionBarTheme"
         app:popupTheme="@style/ToolbarStyle" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="465dp"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/secondFloorFirstListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/secondFloorSecondListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/secondFloorThirdListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/secondFloorFourthListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/secondFloorFifthListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/thirdFloorFirstListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-        <ListView
-            android:id="@+id/thirdFloorSecondListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/thirdFloorThirdListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/thirdFloorFourthListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/thirdFloorFifthListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/fourthFloorFirstListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/fourthFloorSecondListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-        <ListView
-            android:id="@+id/fourthFloorThirdListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/fourthFloorFourthListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/fourthFloorFifthListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/fifthFloorFirstListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/fifthFloorSecondListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/fifthFloorthirdListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-        <ListView
-            android:id="@+id/fifthFloorFourthListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/fifthFloorFifthListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-
-    </LinearLayout>
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ScrollView
+            android:id="@+id/ScrollViewID"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/legend"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="0dp"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/secondFloorText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:fontFamily="monospace"
+                        android:text="2nd Floor"
+                        android:textAlignment="center"
+                        android:textColor="#ff000000"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+
+                    <ListView
+                        android:id="@+id/secondFloorFirstListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/secondFloorSecondListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:layout_gravity="center" />
+
+
+                    <ListView
+                        android:id="@+id/secondFloorThirdListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/secondFloorFourthListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/secondFloorFifthListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:footerDividersEnabled="false"
+                        android:headerDividersEnabled="false"
+                        android:divider="@null"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/thirdFloorText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:fontFamily="monospace"
+                        android:text="@string/_3rd_floor"
+                        android:textAlignment="center"
+                        android:textColor="#ff000000"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <ListView
+                        android:id="@+id/thirdFloorFirstListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/thirdFloorSecondListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:dividerHeight="0dp"
+                        android:layout_gravity="center" />
+
+                <ListView
+                    android:id="@+id/thirdFloorThirdListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null"
+                    android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/thirdFloorFourthListView"
+                        android:layout_width="match_parent"
+                        android:divider="@null"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/thirdFloorFifthListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/fourthFloorText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:fontFamily="monospace"
+                        android:text="4th Floor"
+                        android:textAlignment="center"
+                        android:textColor="#ff000000"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <ListView
+                        android:id="@+id/fourthFloorFirstListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/fourthFloorSecondListView"
+                        android:layout_width="match_parent"
+                        android:divider="@null"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/fourthFloorThirdListView"
+                        android:layout_width="match_parent"
+                        android:divider="@null"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/fourthFloorFourthListView"
+                        android:layout_width="match_parent"
+                        android:divider="@null"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/fourthFloorFifthListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/fifthFloorText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:fontFamily="monospace"
+                        android:text="5th Floor"
+                        android:textAlignment="center"
+                        android:textColor="#ff000000"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <ListView
+                        android:id="@+id/fifthFloorFirstListView"
+                        android:layout_width="match_parent"
+                        android:divider="@null"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/fifthFloorSecondListView"
+                        android:layout_width="match_parent"
+                        android:divider="@null"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/fifthFloorthirdListView"
+                        android:layout_width="match_parent"
+                        android:divider="@null"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/fifthFloorFourthListView"
+                        android:layout_width="match_parent"
+                        android:divider="@null"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:id="@+id/fifthFloorFifthListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:layout_gravity="center" />
+
+
+                </LinearLayout>
+
+        </ScrollView>
+
         <LinearLayout
             android:id="@+id/legend"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="46dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
             <Button
                 android:id="@+id/left"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/Vanu"
                 android:text="Empty"
+
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -172,32 +265,33 @@
                 android:layout_weight="1"
                 android:background="@color/SummerGreen"
                 android:text="Normal"
+
                 android:textColor="#ffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/mostlyBusy"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/Amber"
                 android:text="Busy"
                 android:textAlignment="center"
-                android:textAllCaps="false"
+
                 android:textColor="#ffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/full"
-                android:layout_width="72dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/Anger"
                 android:text="Full"
                 android:textAlignment="center"
-                android:textAllCaps="false"
+
                 android:textColor="#ffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -208,9 +302,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/Grey"
-                android:text="Unavailable"
+                android:text="@string/unavailable"
                 android:textAlignment="center"
-                android:textAllCaps="false"
+
                 android:textColor="#ffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />

@@ -28,5 +28,12 @@ public class SharedPreferenceHelper {
     {
         return sharedPreferences.getString("adminStatus", "basic");
     }
-
+    public String getRoomPreference(){
+        return sharedPreferences.getString("roomStatus","1111");
+    }
+    public void saveRoomPreference(String pref){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("roomStatus",pref );
+        editor.commit();
+    }
 }

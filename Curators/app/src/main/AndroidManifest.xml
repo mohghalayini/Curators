@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mohamadghalayini.curators">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AdminData" />
+        <activity android:name=".Settings"></activity>
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@
 
     <style name="ToolbarStyle" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:colorBackground">@color/concordiared</item>
+        <item  name="android:buttonTint">#ffff</item>
         <item name="android:textColor">#ffff</item>
     </style>
 
