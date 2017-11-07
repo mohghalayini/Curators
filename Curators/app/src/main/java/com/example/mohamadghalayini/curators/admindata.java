@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,14 +22,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class AdminData extends AppCompatActivity {
     Context thisthing = this;
     ArrayAdapter roomAdapterAdmin;
     String[] allRooms;
-    ArrayList<String> outputArray = new ArrayList<String>();
-    ListView adminListView;
+    ArrayList<ArrayList<String>> outputArray;
+    ListView adminListView[]=new ListView[4];
     LinearLayout headerHolder;
     SharedPreferenceHelper statusesAndPreferences;
     @Override
@@ -36,12 +38,12 @@ public class AdminData extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admindata);
         statusesAndPreferences=new SharedPreferenceHelper(this);
-        adminListView = (ListView) findViewById(R.id.adminListView);
         headerHolder = (LinearLayout) findViewById(R.id.headerHolder);
     }
     @Override
     public void onResume(){
         super.onResume();
+        initialiseContainers();
         login();
     }
     public void login() {
@@ -105,6 +107,7 @@ public class AdminData extends AppCompatActivity {
             String actualRoom;
             String roomCurrentSize;
             String roomCapacity;
+            String status;
             for (int i = 0; i < allRooms.length; i++) {
                 String str = allRooms[i];
                 try {
@@ -112,16 +115,24 @@ public class AdminData extends AppCompatActivity {
                     str = str.substring(str.indexOf(";") + 1, str.length());
                     roomCurrentSize = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     str = str.substring(str.indexOf(";") + 1, str.length());
-                    roomCapacity = str.substring(str.indexOf(":") + 1, str.length());
-                    outputArray.add(actualRoom + "                       " + roomCurrentSize + "                           " + roomCapacity);
+                    roomCapacity = str.substring(str.indexOf(":") + 1,  str.indexOf(";"));
+                    str = str.substring(str.indexOf(";") + 1, str.length());
+                    status= str.substring(str.indexOf(":") + 1,  str.indexOf(";"));
+                    double ratio= ((double)Integer.parseInt(roomCurrentSize))/((double)Integer.parseInt(roomCapacity));
+                    ratio=Double.parseDouble(new DecimalFormat("##.##").format(ratio*100));;
+                    outputArray.get(0).add(actualRoom);
+                    outputArray.get(1).add(roomCurrentSize);
+                    outputArray.get(2).add(ratio+"%");
+                    outputArray.get(3).add(status);
                 } catch (Exception e) {
                 }
             }
-
-            roomAdapterAdmin = new ArrayAdapter(thisthing, R.layout.admin_listview, outputArray);
-            adminListView.setAdapter(roomAdapterAdmin);
-            outputArray= new ArrayList<String>();
-        }
+            for (int i=0;i<4;i++) {
+                roomAdapterAdmin = new ArrayAdapter(thisthing, R.layout.admin_listview, outputArray.get(i));
+                adminListView[i].setAdapter(roomAdapterAdmin);
+                setListViewHeightBasedOnChildren( adminListView[i]);
+            }
+    }
     }
 
     private class RoomFetcher extends AsyncTask<Void, Void, Void> {
@@ -145,6 +156,43 @@ public class AdminData extends AppCompatActivity {
             allRooms = rooms.split("/");
             roomDisplayer();
         }
+    }
+    public void initialiseContainers() {
+        new Thread(new Runnable() {
+            public void run() {
+                outputArray= new  ArrayList<ArrayList<String>>();
+                for (int i = 0; i < 4; i++) {
+                    outputArray.add(new ArrayList<String>());
+                }
+                outputArray.get(0).add("Room");
+                outputArray.get(1).add("Size");
+                outputArray.get(2).add("Ratio");
+                outputArray.get(3).add("Status");
+                adminListView[0]= (ListView)findViewById(R.id.roomName);
+                adminListView[1]= (ListView)findViewById(R.id.roomSize);
+                adminListView[2]= (ListView)findViewById(R.id.roomOcc);
+                adminListView[3]= (ListView)findViewById(R.id.roomStatus);
+
+            }
+        }).start();
+    }
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }
 
