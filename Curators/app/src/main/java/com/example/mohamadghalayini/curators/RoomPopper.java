@@ -29,27 +29,30 @@ public class RoomPopper extends AppCompatActivity {
     char[] roomPreference = new char[4];
     TextView[] floorTexts = new TextView[4];
     ArrayList<ArrayList<ArrayList<String>>> floorContainer;//floor container
-    String floorValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_popper);
         initialiseLists(this);
-        initialiseContainers();
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.roomPoppertoolbar); //used a toolbar because I prefer it over the default action bar
         myToolbar.setTitle("");
         myToolbar.setSubtitle("");
         setSupportActionBar(myToolbar);
         preferences = new SharedPreferenceHelper(this);
         getRoomStatuses();
-        decoder();
-    }
 
-    public void decoder() {
-        floorValue = "Any";
+    }
+    public void onResume(){
+        super.onResume();
+        initialiseContainers();
         new RoomFetcher().execute();
     }
+
+
+
+
 
     public void roomDisplayer() {
         if (allRooms != null) {
@@ -69,7 +72,7 @@ public class RoomPopper extends AppCompatActivity {
                     roomStatus = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     int floor = Integer.parseInt(actualRoom.substring(0, 1)) - 2;
 
-                    sort(actualRoom, roomCurrentSize, roomCapacity, floorValue, floor, roomStatus);
+                    sort(actualRoom, roomCurrentSize, roomCapacity, floor, roomStatus);
                 } catch (Exception e) {
                 }
             }
@@ -77,7 +80,7 @@ public class RoomPopper extends AppCompatActivity {
         }
     }
 
-    public void sort(String Room, String Size, String Capacity, String Preference, int floor, String status) {
+    public void sort(String Room, String Size, String Capacity, int floor, String status) {
 
         float size = Integer.parseInt(Size);
         float capacity = Integer.parseInt(Capacity);
@@ -302,7 +305,9 @@ public class RoomPopper extends AppCompatActivity {
                 floorTexts[i].setVisibility(View.VISIBLE);
             }
             if (roomPreference[i] == '1') {
-                if (floorContainer.get(i).get(0).size() != 0 || floorContainer.get(i).get(1).size() != 0 || floorContainer.get(i).get(2).size() != 0 || floorContainer.get(i).get(3).size() != 0) {
+                if (floorContainer.get(i).get(0).size() != 0 || floorContainer.get(i).get(1).size() != 0 ||
+                        floorContainer.get(i).get(2).size() != 0 || floorContainer.get(i).get(3).size() != 0 ||
+                        floorContainer.get(i).get(4).size() != 0) {
                     floorTexts[i].setVisibility(View.VISIBLE);
                 } else floorTexts[i].setVisibility(View.GONE);
 
