@@ -313,12 +313,9 @@ public class RoomPopper extends AppCompatActivity {
 
                 for (int j = 0; j < 5; j++) {
                     counter = (5 * i) + j;
-                    if (floorContainer.get(i).get(j).size() != 0) {
-                        listViews[counter].setVisibility(View.VISIBLE);
-                        listViews[counter].setAdapter(findAdapter(i, j));
-                        setListViewHeightBasedOnChildren(listViews[counter]);
-                    }
-
+                    listViews[counter].setVisibility(View.VISIBLE);
+                    listViews[counter].setAdapter(findAdapter(i, j));
+                    setListViewHeightBasedOnChildren(listViews[counter]);
                 }
             } else {
                 floorTexts[i].setVisibility(View.GONE);
@@ -341,7 +338,6 @@ public class RoomPopper extends AppCompatActivity {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        swipeLayout.setRefreshing(true);
                         initialiseContainers();
                         new RoomFetcher().execute();
                         swipeLayout.setRefreshing(false);
@@ -349,5 +345,5 @@ public class RoomPopper extends AppCompatActivity {
                 }
         );
     }
-
+    
 }
