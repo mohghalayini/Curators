@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 public class RoomPopper extends AppCompatActivity {
     ListView[] listViews = new ListView[20];
     String[] allRooms;
+    SwipeRefreshLayout swipeLayout;
     SharedPreferenceHelper preferences;
     char[] roomPreference = new char[4];
     TextView[] floorTexts = new TextView[4];
@@ -35,7 +37,7 @@ public class RoomPopper extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_popper);
         initialiseLists(this);
-
+        initialiseRefresher();
         Toolbar myToolbar = (Toolbar) findViewById(R.id.roomPoppertoolbar); //used a toolbar because I prefer it over the default action bar
         myToolbar.setTitle("");
         myToolbar.setSubtitle("");
@@ -44,14 +46,12 @@ public class RoomPopper extends AppCompatActivity {
         getRoomStatuses();
 
     }
-    public void onResume(){
+
+    public void onResume() {
         super.onResume();
         initialiseContainers();
         new RoomFetcher().execute();
     }
-
-
-
 
 
     public void roomDisplayer() {
@@ -334,4 +334,20 @@ public class RoomPopper extends AppCompatActivity {
 
         }
     }
+
+    public void initialiseRefresher() {
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        swipeLayout.setRefreshing(true);
+                        initialiseContainers();
+                        new RoomFetcher().execute();
+                        swipeLayout.setRefreshing(false);
+                    }
+                }
+        );
+    }
+
 }

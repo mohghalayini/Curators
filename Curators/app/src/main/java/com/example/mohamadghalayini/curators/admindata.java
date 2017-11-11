@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class AdminData extends AppCompatActivity {
     Context thisthing = this;
     ArrayAdapter roomAdapterAdmin;
     String[] allRooms;
+    SwipeRefreshLayout refresher;
     ArrayList<ArrayList<String>> outputArray;
     ListView adminListView[]=new ListView[4];
     LinearLayout headerHolder;
@@ -37,6 +39,7 @@ public class AdminData extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admindata);
+        initialiseRefresher();
         statusesAndPreferences=new SharedPreferenceHelper(this);
         headerHolder = (LinearLayout) findViewById(R.id.headerHolder);
     }
@@ -193,6 +196,20 @@ public class AdminData extends AppCompatActivity {
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
+    }
+    public void initialiseRefresher() {
+        refresher = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        refresher.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        refresher.setRefreshing(true);
+                        initialiseContainers();
+                        new RoomFetcher().execute();
+                        refresher.setRefreshing(false);
+                    }
+                }
+        );
     }
 }
 
