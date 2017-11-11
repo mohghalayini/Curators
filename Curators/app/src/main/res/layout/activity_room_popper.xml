@@ -49,7 +49,7 @@
                         android:text="2nd Floor"
                         android:textAlignment="center"
                         android:textColor="#ff000000"
-                        android:textSize="26sp"
+                        android:textSize="22sp"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
