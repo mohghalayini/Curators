@@ -12,9 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,7 +27,9 @@ import java.util.ArrayList;
 
 public class RoomPopper extends AppCompatActivity {
     ListView[] listViews = new ListView[20];
+    int floorClick[] = {0, 0, 0, 0};
     String[] allRooms;
+    Boolean firstTime = true;
     SwipeRefreshLayout swipeLayout;
     SharedPreferenceHelper preferences;
     char[] roomPreference = new char[4];
@@ -51,6 +55,10 @@ public class RoomPopper extends AppCompatActivity {
         super.onResume();
         initialiseContainers();
         new RoomFetcher().execute();
+        if (firstTime) {
+            firstTime = false;
+            Toast.makeText(this, "Click on a floor to expand or hide its rooms", Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -310,22 +318,24 @@ public class RoomPopper extends AppCompatActivity {
                         floorContainer.get(i).get(4).size() != 0) {
                     floorTexts[i].setVisibility(View.VISIBLE);
                 } else floorTexts[i].setVisibility(View.GONE);
-
-                for (int j = 0; j < 5; j++) {
-                    counter = (5 * i) + j;
-                    listViews[counter].setVisibility(View.VISIBLE);
-                    listViews[counter].setAdapter(findAdapter(i, j));
-                    setListViewHeightBasedOnChildren(listViews[counter]);
+                if (floorClick[i] == 1) {
+                    for (int j = 0; j < 5; j++) {
+                        counter = (5 * i) + j;
+                        listViews[counter].setVisibility(View.VISIBLE);
+                        listViews[counter].setAdapter(findAdapter(i, j));
+                        setListViewHeightBasedOnChildren(listViews[counter]);
+                    }
+                } else {
+                    for (int j = 0; j < 5; j++) {
+                        counter = (5 * i) + j;
+                        listViews[counter].setVisibility(View.GONE);
+                    }
                 }
             } else {
                 floorTexts[i].setVisibility(View.GONE);
                 for (int j = 0; j < 5; j++) {
                     counter = (5 * i) + j;
-                    if (floorContainer.get(i).get(j).size() != 0) {
-                        listViews[counter].setVisibility(View.GONE);
-
-                    }
-
+                    listViews[counter].setVisibility(View.GONE);
                 }
             }
 
@@ -344,6 +354,52 @@ public class RoomPopper extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    public void hideOrShow(View view) {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        if (view.getId() == R.id.secondFloorText) {
+            if (floorClick[0] == 0) {
+                floorClick[0] = 1;
+                params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
+                view.setLayoutParams(params);
+            } else {
+                floorClick[0] = 0;
+                params.setMargins(0, 0, 0, 10); //substitute parameters for left, top, right, bottom
+                view.setLayoutParams(params);
+            }
+        } else if (view.getId() == R.id.thirdFloorText) {
+            if (floorClick[1] == 0) {
+                floorClick[1] = 1;
+                params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
+                view.setLayoutParams(params);
+            } else {
+                floorClick[1] = 0;
+                params.setMargins(0, 0, 0, 10); //substitute parameters for left, top, right, bottom
+                view.setLayoutParams(params);
+            }
+        } else if (view.getId() == R.id.fourthFloorText) {
+            if (floorClick[2] == 0) {
+                floorClick[2] = 1;
+                params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
+                view.setLayoutParams(params);
+            } else {
+                floorClick[2] = 0;
+                params.setMargins(0, 0, 0, 10); //substitute parameters for left, top, right, bottom
+                view.setLayoutParams(params);
+            }
+        } else if (view.getId() == R.id.fifthFloorText) {
+            if (floorClick[3] == 0) {
+                floorClick[3] = 1;
+                params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
+                view.setLayoutParams(params);
+            } else {
+                floorClick[3] = 0;
+                params.setMargins(0, 0, 0, 10); //substitute parameters for left, top, right, bottom
+                view.setLayoutParams(params);
+            }
+        }
+        connectTheViews();
     }
 
 }

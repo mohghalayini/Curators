@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/ScrollViewID"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -45,11 +45,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#ffffff"
+                        android:layout_marginBottom="10dp"
                         android:fontFamily="monospace"
                         android:text="2nd Floor"
                         android:textAlignment="center"
                         android:textColor="#ff000000"
-                        android:textSize="22sp"
+                        android:textSize="26sp"
+                        android:onClick="hideOrShow"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
@@ -100,8 +102,10 @@
                         android:fontFamily="monospace"
                         android:text="@string/_3rd_floor"
                         android:textAlignment="center"
+                        android:layout_marginBottom="10dp"
                         android:textColor="#ff000000"
-                        android:textSize="22sp"
+                        android:textSize="26sp"
+                        android:onClick="hideOrShow"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
@@ -150,7 +154,9 @@
                         android:text="4th Floor"
                         android:textAlignment="center"
                         android:textColor="#ff000000"
-                        android:textSize="22sp"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="26sp"
+                        android:onClick="hideOrShow"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
@@ -197,8 +203,10 @@
                         android:fontFamily="monospace"
                         android:text="5th Floor"
                         android:textAlignment="center"
+                        android:layout_marginBottom="10dp"
                         android:textColor="#ff000000"
-                        android:textSize="22sp"
+                        android:textSize="26sp"
+                        android:onClick="hideOrShow"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
@@ -240,7 +248,7 @@
 
                 </LinearLayout>
 
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
         <LinearLayout
             android:id="@+id/legend"
