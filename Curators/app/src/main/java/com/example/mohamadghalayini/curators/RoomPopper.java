@@ -68,6 +68,7 @@ public class RoomPopper extends AppCompatActivity {
             String actualRoom;
             String roomCurrentSize;
             String roomCapacity;
+            String nickname;
             String roomStatus;
             for (int i = 0; i < allRooms.length; i++) {
                 String str = allRooms[i];
@@ -79,9 +80,12 @@ public class RoomPopper extends AppCompatActivity {
                     roomCapacity = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     str = str.substring(str.indexOf(";") + 1, str.length());
                     roomStatus = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
+                    str = str.substring(str.indexOf(";") + 1, str.length());
+                    str = str.substring(str.indexOf(";") + 1, str.length());
+                    nickname=str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     int floor = Integer.parseInt(actualRoom.substring(0, 1)) - 2;
 
-                    sort(actualRoom, roomCurrentSize, roomCapacity, floor, roomStatus);
+                    sort(actualRoom, roomCurrentSize, roomCapacity, floor, roomStatus,nickname);
                 } catch (Exception e) {
                 }
             }
@@ -89,7 +93,7 @@ public class RoomPopper extends AppCompatActivity {
         }
     }
 
-    public void sort(String Room, String Size, String Capacity, int floor, String status) {
+    public void sort(String Room, String Size, String Capacity, int floor, String status,String nickname) {
 
         float size = Integer.parseInt(Size);
         float capacity = Integer.parseInt(Capacity);
@@ -99,16 +103,16 @@ public class RoomPopper extends AppCompatActivity {
         }
         if (status.equals("Active")) {
             if (ratio < 0.25) {
-                floorContainer.get(floor).get(0).add("Room: " + Room);
+                floorContainer.get(floor).get(0).add("Room: " + Room+"-"+nickname);
             } else if (ratio < 0.5) {
-                floorContainer.get(floor).get(1).add("Room: " + Room);
+                floorContainer.get(floor).get(1).add("Room: " + Room+"-"+nickname);
             } else if (ratio < 0.75) {
-                floorContainer.get(floor).get(2).add("Room: " + Room);
+                floorContainer.get(floor).get(2).add("Room: " + Room+"-"+nickname);
             } else if (ratio <= 1) {
-                floorContainer.get(floor).get(3).add("Room: " + Room);
+                floorContainer.get(floor).get(3).add("Room: " + Room+"-"+nickname);
             }
         } else if (status.equals("Inactive")) {
-            floorContainer.get(floor).get(4).add("Room: " + Room);
+            floorContainer.get(floor).get(4).add("Room: " + Room+"-"+nickname);
         }
     }
 
@@ -406,7 +410,7 @@ public class RoomPopper extends AppCompatActivity {
             }
 
             if (floorClick[i] == 1) {
-                int counter = 0;
+                int counter ;
                 int finalHeight = 0;
                 for (int j = 0; j < 5; j++) {
                     counter = (5 * i) + j;
