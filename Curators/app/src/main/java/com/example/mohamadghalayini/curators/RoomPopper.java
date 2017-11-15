@@ -29,6 +29,7 @@ public class RoomPopper extends AppCompatActivity {
     ListView[] listViews = new ListView[20];
     int floorClick[] = {0, 0, 0, 0};
     String[] allRooms;
+    int heights[] = {0, 0, 0, 0};
     Boolean firstTime = true;
     SwipeRefreshLayout swipeLayout;
     SharedPreferenceHelper preferences;
@@ -340,6 +341,7 @@ public class RoomPopper extends AppCompatActivity {
             }
 
         }
+        setButtonHeight();
     }
 
     public void initialiseRefresher() {
@@ -361,45 +363,72 @@ public class RoomPopper extends AppCompatActivity {
         if (view.getId() == R.id.secondFloorText) {
             if (floorClick[0] == 0) {
                 floorClick[0] = 1;
-                params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
-                view.setLayoutParams(params);
             } else {
                 floorClick[0] = 0;
-                params.setMargins(0, 0, 0, 10); //substitute parameters for left, top, right, bottom
-                view.setLayoutParams(params);
             }
         } else if (view.getId() == R.id.thirdFloorText) {
             if (floorClick[1] == 0) {
                 floorClick[1] = 1;
-                params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
-                view.setLayoutParams(params);
             } else {
                 floorClick[1] = 0;
-                params.setMargins(0, 0, 0, 10); //substitute parameters for left, top, right, bottom
-                view.setLayoutParams(params);
             }
         } else if (view.getId() == R.id.fourthFloorText) {
             if (floorClick[2] == 0) {
                 floorClick[2] = 1;
-                params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
-                view.setLayoutParams(params);
             } else {
                 floorClick[2] = 0;
-                params.setMargins(0, 0, 0, 10); //substitute parameters for left, top, right, bottom
-                view.setLayoutParams(params);
             }
         } else if (view.getId() == R.id.fifthFloorText) {
             if (floorClick[3] == 0) {
                 floorClick[3] = 1;
-                params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
-                view.setLayoutParams(params);
             } else {
                 floorClick[3] = 0;
-                params.setMargins(0, 0, 0, 10); //substitute parameters for left, top, right, bottom
-                view.setLayoutParams(params);
             }
         }
         connectTheViews();
+    }
+
+    public void setButtonHeight() {
+        for (int i = 0; i < 4; i++) {
+            TextView text = null;
+            switch (i) {
+                case 0:
+                    text = (TextView) findViewById(R.id.secondFloorText);
+                    break;
+                case 1:
+                    text = (TextView) findViewById(R.id.thirdFloorText);
+                    break;
+                case 2:
+                    text = (TextView) findViewById(R.id.fourthFloorText);
+                    break;
+                case 3:
+                    text = (TextView) findViewById(R.id.fifthFloorText);
+            }
+
+            if (floorClick[i] == 1) {
+                int counter = 0;
+                int finalHeight = 0;
+                for (int j = 0; j < 5; j++) {
+                    counter = (5 * i) + j;
+                    ViewGroup.LayoutParams params = listViews[counter].getLayoutParams();
+                    finalHeight += params.height;
+                }
+                LinearLayout.LayoutParams parameter = (LinearLayout.LayoutParams) text.getLayoutParams();
+                parameter.height = finalHeight;
+                text.setLayoutParams(parameter);
+            } else {
+                if (heights[i] == 0) {
+                    LinearLayout.LayoutParams parameter = (LinearLayout.LayoutParams) text.getLayoutParams();
+                    heights[i] = parameter.height;
+                } else {
+                    LinearLayout.LayoutParams parameter = (LinearLayout.LayoutParams) text.getLayoutParams();
+                    parameter.height = heights[i];
+                    text.setLayoutParams(parameter);
+
+                }
+            }
+        }
+
     }
 
 }
