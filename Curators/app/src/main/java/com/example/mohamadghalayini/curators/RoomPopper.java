@@ -31,6 +31,8 @@ public class RoomPopper extends AppCompatActivity {
     String[] allRooms;
     int heights[] = {0, 0, 0, 0};
     Boolean firstTime = true;
+    long timeDifference = 0;
+    long lastRefresh = 0;
     SwipeRefreshLayout swipeLayout;
     SharedPreferenceHelper preferences;
     char[] roomPreference = new char[4];
@@ -54,11 +56,15 @@ public class RoomPopper extends AppCompatActivity {
 
     public void onResume() {
         super.onResume();
-        initialiseContainers();
-        new RoomFetcher().execute();
-        if (firstTime) {
-            firstTime = false;
-            Toast.makeText(this, "Click on a floor to expand or hide its rooms", Toast.LENGTH_LONG).show();
+        timeDifference = System.currentTimeMillis() - lastRefresh;
+        if (timeDifference > 550) {
+            lastRefresh = System.currentTimeMillis();
+            initialiseContainers();
+            new RoomFetcher().execute();
+            if (firstTime) {
+                firstTime = false;
+                Toast.makeText(this, "Click on a floor to expand or hide its rooms", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -82,10 +88,10 @@ public class RoomPopper extends AppCompatActivity {
                     roomStatus = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     str = str.substring(str.indexOf(";") + 1, str.length());
                     str = str.substring(str.indexOf(";") + 1, str.length());
-                    nickname=str.substring(str.indexOf(":") + 1, str.indexOf(";"));
+                    nickname = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     int floor = Integer.parseInt(actualRoom.substring(0, 1)) - 2;
 
-                    sort(actualRoom, roomCurrentSize, roomCapacity, floor, roomStatus,nickname);
+                    sort(actualRoom, roomCurrentSize, roomCapacity, floor, roomStatus, nickname);
                 } catch (Exception e) {
                 }
             }
@@ -93,7 +99,7 @@ public class RoomPopper extends AppCompatActivity {
         }
     }
 
-    public void sort(String Room, String Size, String Capacity, int floor, String status,String nickname) {
+    public void sort(String Room, String Size, String Capacity, int floor, String status, String nickname) {
 
         float size = Integer.parseInt(Size);
         float capacity = Integer.parseInt(Capacity);
@@ -103,16 +109,16 @@ public class RoomPopper extends AppCompatActivity {
         }
         if (status.equals("Active")) {
             if (ratio < 0.25) {
-                floorContainer.get(floor).get(0).add("Room: " + Room+"-"+nickname);
+                floorContainer.get(floor).get(0).add("Room: " + Room + "-" + nickname);
             } else if (ratio < 0.5) {
-                floorContainer.get(floor).get(1).add("Room: " + Room+"-"+nickname);
+                floorContainer.get(floor).get(1).add("Room: " + Room + "-" + nickname);
             } else if (ratio < 0.75) {
-                floorContainer.get(floor).get(2).add("Room: " + Room+"-"+nickname);
+                floorContainer.get(floor).get(2).add("Room: " + Room + "-" + nickname);
             } else if (ratio <= 1) {
-                floorContainer.get(floor).get(3).add("Room: " + Room+"-"+nickname);
+                floorContainer.get(floor).get(3).add("Room: " + Room + "-" + nickname);
             }
         } else if (status.equals("Inactive")) {
-            floorContainer.get(floor).get(4).add("Room: " + Room+"-"+nickname);
+            floorContainer.get(floor).get(4).add("Room: " + Room + "-" + nickname);
         }
     }
 
@@ -354,8 +360,12 @@ public class RoomPopper extends AppCompatActivity {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        initialiseContainers();
-                        new RoomFetcher().execute();
+                        timeDifference = System.currentTimeMillis() - lastRefresh;
+                        if (timeDifference > 450) {
+                            initialiseContainers();
+                            lastRefresh = System.currentTimeMillis();
+                            new RoomFetcher().execute();
+                        }
                         swipeLayout.setRefreshing(false);
                     }
                 }
@@ -410,7 +420,7 @@ public class RoomPopper extends AppCompatActivity {
             }
 
             if (floorClick[i] == 1) {
-                int counter ;
+                int counter;
                 int finalHeight = 0;
                 for (int j = 0; j < 5; j++) {
                     counter = (5 * i) + j;

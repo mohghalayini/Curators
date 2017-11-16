@@ -32,23 +32,32 @@ public class AdminData extends AppCompatActivity {
     String[] allRooms;
     SwipeRefreshLayout refresher;
     ArrayList<ArrayList<String>> outputArray;
-    ListView adminListView[]=new ListView[4];
+    ListView adminListView[] = new ListView[4];
     LinearLayout headerHolder;
+    long timeDifference = 0;
+    long lastRefresh = 0;
     SharedPreferenceHelper statusesAndPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admindata);
         initialiseRefresher();
-        statusesAndPreferences=new SharedPreferenceHelper(this);
+        statusesAndPreferences = new SharedPreferenceHelper(this);
         headerHolder = (LinearLayout) findViewById(R.id.headerHolder);
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        initialiseContainers();
-        login();
+        timeDifference = System.currentTimeMillis() - lastRefresh;
+        if (timeDifference > 550) {
+            lastRefresh = System.currentTimeMillis();
+            initialiseContainers();
+            login();
+        }
     }
+
     public void login() {
         if (statusesAndPreferences.getAdminStatus().equals("basic")) {
 
@@ -94,8 +103,7 @@ public class AdminData extends AppCompatActivity {
 
 
             builder.show();
-        }
-        else{
+        } else {
             findViewById(R.id.Password).setVisibility(View.INVISIBLE);
             findViewById(R.id.username).setVisibility(View.INVISIBLE);
             new RoomFetcher().execute();
@@ -118,24 +126,25 @@ public class AdminData extends AppCompatActivity {
                     str = str.substring(str.indexOf(";") + 1, str.length());
                     roomCurrentSize = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     str = str.substring(str.indexOf(";") + 1, str.length());
-                    roomCapacity = str.substring(str.indexOf(":") + 1,  str.indexOf(";"));
+                    roomCapacity = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     str = str.substring(str.indexOf(";") + 1, str.length());
-                    status= str.substring(str.indexOf(":") + 1,  str.indexOf(";"));
-                    double ratio= ((double)Integer.parseInt(roomCurrentSize))/((double)Integer.parseInt(roomCapacity));
-                    ratio=Double.parseDouble(new DecimalFormat("##.##").format(ratio*100));;
+                    status = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
+                    double ratio = ((double) Integer.parseInt(roomCurrentSize)) / ((double) Integer.parseInt(roomCapacity));
+                    ratio = Double.parseDouble(new DecimalFormat("##.##").format(ratio * 100));
+                    ;
                     outputArray.get(0).add(actualRoom);
                     outputArray.get(1).add(roomCurrentSize);
-                    outputArray.get(2).add(ratio+"%");
+                    outputArray.get(2).add(ratio + "%");
                     outputArray.get(3).add(status);
                 } catch (Exception e) {
                 }
             }
-            for (int i=0;i<4;i++) {
+            for (int i = 0; i < 4; i++) {
                 roomAdapterAdmin = new ArrayAdapter(thisthing, R.layout.admin_listview, outputArray.get(i));
                 adminListView[i].setAdapter(roomAdapterAdmin);
-                setListViewHeightBasedOnChildren( adminListView[i]);
+                setListViewHeightBasedOnChildren(adminListView[i]);
             }
-    }
+        }
     }
 
     private class RoomFetcher extends AsyncTask<Void, Void, Void> {
@@ -160,10 +169,11 @@ public class AdminData extends AppCompatActivity {
             roomDisplayer();
         }
     }
+
     public void initialiseContainers() {
         new Thread(new Runnable() {
             public void run() {
-                outputArray= new  ArrayList<ArrayList<String>>();
+                outputArray = new ArrayList<ArrayList<String>>();
                 for (int i = 0; i < 4; i++) {
                     outputArray.add(new ArrayList<String>());
                 }
@@ -171,14 +181,15 @@ public class AdminData extends AppCompatActivity {
                 outputArray.get(1).add("Size");
                 outputArray.get(2).add("Ratio");
                 outputArray.get(3).add("Status");
-                adminListView[0]= (ListView)findViewById(R.id.roomName);
-                adminListView[1]= (ListView)findViewById(R.id.roomSize);
-                adminListView[2]= (ListView)findViewById(R.id.roomOcc);
-                adminListView[3]= (ListView)findViewById(R.id.roomStatus);
+                adminListView[0] = (ListView) findViewById(R.id.roomName);
+                adminListView[1] = (ListView) findViewById(R.id.roomSize);
+                adminListView[2] = (ListView) findViewById(R.id.roomOcc);
+                adminListView[3] = (ListView) findViewById(R.id.roomStatus);
 
             }
         }).start();
     }
+
     public void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -197,15 +208,19 @@ public class AdminData extends AppCompatActivity {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
     }
+
     public void initialiseRefresher() {
         refresher = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         refresher.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        refresher.setRefreshing(true);
-                        initialiseContainers();
-                        new RoomFetcher().execute();
+                        timeDifference = System.currentTimeMillis() - lastRefresh;
+                        if (timeDifference > 550) {
+                            lastRefresh = System.currentTimeMillis();
+                            initialiseContainers();
+                            new RoomFetcher().execute();
+                        }
                         refresher.setRefreshing(false);
                     }
                 }
