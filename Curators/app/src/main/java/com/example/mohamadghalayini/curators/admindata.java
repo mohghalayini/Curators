@@ -221,6 +221,7 @@ public class AdminData extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             initialiseContainers();
             login();
+            lastRefresh= System.currentTimeMillis();
         }
     }
 
