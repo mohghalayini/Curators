@@ -219,9 +219,17 @@ public class AdminData extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
+            lastRefresh = System.currentTimeMillis();
+            adminListView[1].setFocusable(false);
+            adminListView[3].setFocusable(false);
+            adminListView[1].setClickable(false);
+            adminListView[3].setClickable(false);
             initialiseContainers();
             login();
-            lastRefresh= System.currentTimeMillis();
+            adminListView[1].setFocusable(true);
+            adminListView[3].setFocusable(true);
+            adminListView[1].setClickable(true);
+            adminListView[3].setClickable(true);
         }
     }
 
@@ -288,13 +296,19 @@ public class AdminData extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminData.this);
         builder.setPositiveButton("Active", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new RoomStatusChanger(outputArray.get(4).get(position), "Active").execute();
+                try {
+                    new RoomStatusChanger(outputArray.get(4).get(position), "Active").execute();
+                } catch (Exception e) {
+                }
             }
         });
         builder.setTitle("Room:" + outputArray.get(0).get(position) + " Status");
         builder.setNegativeButton("Inactive", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new RoomStatusChanger(outputArray.get(4).get(position), "Inactive").execute();
+                try {
+                    new RoomStatusChanger(outputArray.get(4).get(position), "Inactive").execute();
+                } catch (Exception e) {
+                }
             }
         });
 
@@ -306,7 +320,10 @@ public class AdminData extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminData.this);
         builder.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new RoomStatusChanger(outputArray.get(4).get(position), Integer.parseInt(outputArray.get(1).get(position)), outputArray.get(3).get(position)).execute();
+                try {
+                    new RoomStatusChanger(outputArray.get(4).get(position), Integer.parseInt(outputArray.get(1).get(position)), outputArray.get(3).get(position)).execute();
+                } catch (Exception e) {
+                }
             }
         });
         builder.setTitle(" Reset counter for Room:" + outputArray.get(0).get(position) + "?");
@@ -323,16 +340,23 @@ public class AdminData extends AppCompatActivity {
         adminListView[3].setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                if (position != 0) {
-                    roomStatus(position);
+                try {
+                    if (position != 0) {
+                        roomStatus(position);
+                    }
+                } catch (Exception e) {
                 }
             }
         });
         adminListView[1].setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
+
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                if (position != 0) {
-                    counterResetter(position);
+                try {
+                    if (position != 0) {
+                        counterResetter(position);
+                    }
+                } catch (Exception e) {
                 }
             }
         });
