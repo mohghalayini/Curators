@@ -3,6 +3,8 @@ package com.example.mohamadghalayini.curators;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -54,11 +56,18 @@ public class AdminData extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+
         timeDifference = System.currentTimeMillis() - lastRefresh;
         if (timeDifference > 550) {
-            lastRefresh = System.currentTimeMillis();
-            initialiseContainers();
-            login();
+            refresher.setRefreshing(true);
+            if (isNetworkAvailable()) {
+                lastRefresh = System.currentTimeMillis();
+                initialiseContainers();
+                login();
+            } else {
+                Toast.makeText(thisthing, "Failed to fetch the rooms, please make sure you're connected to the internet", Toast.LENGTH_SHORT).show();
+            }
+            refresher.setRefreshing(false);
         }
         if (firstTime) {
             firstTime = false;
@@ -280,11 +289,15 @@ public class AdminData extends AppCompatActivity {
                     @Override
                     public void onRefresh() {
                         timeDifference = System.currentTimeMillis() - lastRefresh;
-                        if (timeDifference > 550) {
-                            lastRefresh = System.currentTimeMillis();
-                            initialiseContainers();
-                            new RoomFetcher().execute();
-                            initialiseListeners();
+                        if (timeDifference > 750) {
+                            if (isNetworkAvailable()) {
+                                lastRefresh = System.currentTimeMillis();
+                                initialiseContainers();
+                                new RoomFetcher().execute();
+                                initialiseListeners();
+                            } else{
+                                Toast.makeText(thisthing, "Failed to fetch the rooms, please make sure you're connected to the internet", Toast.LENGTH_SHORT).show();
+                            }
                         }
                         refresher.setRefreshing(false);
                     }
@@ -362,6 +375,12 @@ public class AdminData extends AppCompatActivity {
         });
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 }
 

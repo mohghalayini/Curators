@@ -2,6 +2,8 @@ package com.example.mohamadghalayini.curators;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -58,14 +60,20 @@ public class RoomPopper extends AppCompatActivity {
         super.onResume();
         timeDifference = System.currentTimeMillis() - lastRefresh;
         if (timeDifference > 550) {
-            lastRefresh = System.currentTimeMillis();
-            initialiseContainers();
-            new RoomFetcher().execute();
-            if (firstTime) {
-                firstTime = false;
-                Toast.makeText(this, "Click on a floor to expand or hide its rooms", Toast.LENGTH_LONG).show();
-            }
+            if (isNetworkAvailable()) {
+                swipeLayout.setRefreshing(true);
+                lastRefresh = System.currentTimeMillis();
+                initialiseContainers();
+                new RoomFetcher().execute();
+                if (firstTime) {
+                    firstTime = false;
+                    Toast.makeText(this, "Click on a floor to expand or hide its rooms", Toast.LENGTH_LONG).show();
+                }
+                swipeLayout.setRefreshing(false);
+            } else
+                Toast.makeText(this, "Failed to fetch the rooms, please make sure you're connected to the internet", Toast.LENGTH_LONG).show();
         }
+
     }
 
 
@@ -360,13 +368,19 @@ public class RoomPopper extends AppCompatActivity {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        timeDifference = System.currentTimeMillis() - lastRefresh;
-                        if (timeDifference > 450) {
-                            initialiseContainers();
-                            lastRefresh = System.currentTimeMillis();
-                            new RoomFetcher().execute();
+                        if (isNetworkAvailable()) {
+                            timeDifference = System.currentTimeMillis() - lastRefresh;
+                            if (timeDifference > 650) {
+                                initialiseContainers();
+                                lastRefresh = System.currentTimeMillis();
+                                new RoomFetcher().execute();
+                            }
+                            swipeLayout.setRefreshing(false);
+                        } else {
+                            Toast.makeText(RoomPopper.this, "Failed to fetch the rooms, please make sure you're connected to the internet", Toast.LENGTH_SHORT).show();
+                            swipeLayout.setRefreshing(false);
                         }
-                        swipeLayout.setRefreshing(false);
+
                     }
                 }
         );
@@ -445,4 +459,10 @@ public class RoomPopper extends AppCompatActivity {
 
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }
