@@ -32,7 +32,6 @@ public class RoomPopper extends AppCompatActivity {
     int floorClick[] = {0, 0, 0, 0};
     String[] allRooms;
     int heights[] = {0, 0, 0, 0};
-    Boolean firstTime = true;
     long timeDifference = 0;
     long lastRefresh = 0;
     SwipeRefreshLayout swipeLayout;
@@ -57,6 +56,10 @@ public class RoomPopper extends AppCompatActivity {
     }
 
     public void onResume() {
+        boolean  firstTime=false;
+        if(preferences.firstTimeStatus().equals("yes")){
+            firstTime=true;
+        }
         super.onResume();
         timeDifference = System.currentTimeMillis() - lastRefresh;
         if (timeDifference > 550) {
@@ -66,8 +69,8 @@ public class RoomPopper extends AppCompatActivity {
                 initialiseContainers();
                 new RoomFetcher().execute();
                 if (firstTime) {
-                    firstTime = false;
                     Toast.makeText(this, "Click on a floor to expand or hide its rooms", Toast.LENGTH_LONG).show();
+                    preferences.saveFirstTimeStatus();
                 }
                 swipeLayout.setRefreshing(false);
             } else

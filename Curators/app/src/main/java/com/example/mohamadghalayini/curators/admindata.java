@@ -39,9 +39,10 @@ public class AdminData extends AppCompatActivity {
     ArrayList<ArrayList<String>> outputArray;
     ListView adminListView[] = new ListView[4];
     LinearLayout headerHolder;
+    int counter = 3;
     long timeDifference = 0;
     long lastRefresh = 0;
-    Boolean firstTime = true;
+
     SharedPreferenceHelper statusesAndPreferences;
 
     @Override
@@ -69,65 +70,72 @@ public class AdminData extends AppCompatActivity {
             }
             refresher.setRefreshing(false);
         }
-        if (firstTime) {
-            firstTime = false;
-            initialiseListeners();
-        }
+
+
+        initialiseListeners();
     }
 
+
     public void login() {
-        if (statusesAndPreferences.getAdminStatus().equals("basic")) {
+        long millisecondsLeft = (System.currentTimeMillis() - statusesAndPreferences.getLockTime());
+        if (millisecondsLeft > 300000) {
+            if (statusesAndPreferences.getAdminStatus().equals("basic")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setCancelable(false);
+                builder.setTitle("Please enter your Username and Password");
+                LayoutInflater inflater = AdminData.this.getLayoutInflater();
+                ((ViewGroup) findViewById(R.id.mainlayout)).setVisibility(View.INVISIBLE);
+                View view = (inflater.inflate(R.layout.builder_layout, null));
+                builder.setView(view);
+                final EditText password = (EditText) view.findViewById(R.id.passwordtwo);
+                final EditText username = (EditText) view.findViewById(R.id.usernametwo);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false);
-            builder.setTitle("Please enter your Username and Password");
-            View viewInflated = LayoutInflater.from(this).inflate(R.layout.activity_admindata, (ViewGroup) findViewById(R.id.Loginlayout), false);
-            ((ViewGroup) findViewById(R.id.mainlayout)).setVisibility(View.INVISIBLE);
-            final EditText password = (EditText) viewInflated.findViewById(R.id.Password);
-            final EditText username = (EditText) viewInflated.findViewById(R.id.username);
-            builder.setView(viewInflated);
-
-            builder.setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ((ViewGroup) findViewById(R.id.mainlayout)).setVisibility(View.VISIBLE);
-
-                    String thepassword = password.getText().toString();
-                    String theusername = username.getText().toString();
-                    findViewById(R.id.Password).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.username).setVisibility(View.INVISIBLE);
-                    if (theusername.equals("1") && thepassword.equals("2")) {
-                        dialog.dismiss();
-                        new RoomFetcher().execute();
-                        headerHolder.setVisibility(View.VISIBLE);
-                        statusesAndPreferences.saveAdminStatus("Admin");
-                    } else {
+                builder.setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((ViewGroup) findViewById(R.id.mainlayout)).setVisibility(View.VISIBLE);
+                        String thepassword = password.getText().toString();
+                        String theusername = username.getText().toString();
+                        if (theusername.equals("1") && thepassword.equals("2")) {
+                            dialog.dismiss();
+                            new RoomFetcher().execute();
+                            headerHolder.setVisibility(View.VISIBLE);
+                            statusesAndPreferences.saveAdminStatus("Admin");
+                        } else {
+                            counter--;
+                            if (counter == 0) {
+                                Intent begone = new Intent(thisthing, RoomPopper.class);
+                                startActivity(begone);
+                                statusesAndPreferences.saveLockTimer(System.currentTimeMillis());
+                                Toast.makeText(thisthing, "Login locked try again in 5 minutes", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(thisthing, "Wrong Username or Password try again", Toast.LENGTH_SHORT).show();
+                                login();
+                            }
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((ViewGroup) findViewById(R.id.mainlayout)).setVisibility(View.VISIBLE);
+                        dialog.cancel();
                         Intent begone = new Intent(thisthing, RoomPopper.class);
                         startActivity(begone);
-                        Toast.makeText(thisthing, "Wrong Username or Password try again", Toast.LENGTH_SHORT).show();
                     }
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ((ViewGroup) findViewById(R.id.mainlayout)).setVisibility(View.VISIBLE);
-                    dialog.cancel();
-                    Intent begone = new Intent(thisthing, RoomPopper.class);
-                    startActivity(begone);
-                }
-            });
+                });
 
 
-            builder.show();
+                builder.show();
+            } else {
+                new RoomFetcher().execute();
+                headerHolder.setVisibility(View.VISIBLE);
+            }
         } else {
-            findViewById(R.id.Password).setVisibility(View.INVISIBLE);
-            findViewById(R.id.username).setVisibility(View.INVISIBLE);
-            new RoomFetcher().execute();
-            headerHolder.setVisibility(View.VISIBLE);
-            statusesAndPreferences.saveAdminStatus("Admin");
+            Intent begone = new Intent(thisthing, RoomPopper.class);
+            startActivity(begone);
+            Toast.makeText(thisthing, "Still locked come back in:"+Long.toString((300000-millisecondsLeft)/1000)+"seconds", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void roomDisplayer() {
@@ -295,7 +303,7 @@ public class AdminData extends AppCompatActivity {
                                 initialiseContainers();
                                 new RoomFetcher().execute();
                                 initialiseListeners();
-                            } else{
+                            } else {
                                 Toast.makeText(thisthing, "Failed to fetch the rooms, please make sure you're connected to the internet", Toast.LENGTH_SHORT).show();
                             }
                         }
