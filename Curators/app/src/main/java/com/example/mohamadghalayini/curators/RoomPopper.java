@@ -56,9 +56,9 @@ public class RoomPopper extends AppCompatActivity {
     }
 
     public void onResume() {
-        boolean  firstTime=false;
-        if(preferences.firstTimeStatus().equals("yes")){
-            firstTime=true;
+        boolean firstTime = false;
+        if (preferences.firstTimeStatus().equals("yes")) {
+            firstTime = true;
         }
         super.onResume();
         timeDifference = System.currentTimeMillis() - lastRefresh;
@@ -180,58 +180,74 @@ public class RoomPopper extends AppCompatActivity {
                 break;
             }
             case R.id.secondFloorCheck: {
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    roomPreference[0] = '0';
-                    preferences.saveRoomPreference(new String(roomPreference));
-                } else {
-                    item.setChecked(true);
-                    roomPreference[0] = '1';
-                    preferences.saveRoomPreference(new String(roomPreference));
+                try {
+                    if (item.isChecked()) {
+                        item.setChecked(false);
+                        roomPreference[0] = '0';
+                        preferences.saveRoomPreference(new String(roomPreference));
+                    } else {
+                        item.setChecked(true);
+                        roomPreference[0] = '1';
+                        preferences.saveRoomPreference(new String(roomPreference));
+                    }
+                    connectTheViews();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
-                connectTheViews();
                 break;
             }
             case R.id.thirdFloorCheck: {
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    roomPreference[1] = '0';
-                    preferences.saveRoomPreference(new String(roomPreference));
-                } else {
-                    item.setChecked(true);
-                    roomPreference[1] = '1';
-                    preferences.saveRoomPreference(new String(roomPreference));
+                try {
+                    if (item.isChecked()) {
+                        item.setChecked(false);
+                        roomPreference[1] = '0';
+                        preferences.saveRoomPreference(new String(roomPreference));
+                    } else {
+                        item.setChecked(true);
+                        roomPreference[1] = '1';
+                        preferences.saveRoomPreference(new String(roomPreference));
+                    }
+                    connectTheViews();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
-                connectTheViews();
                 break;
             }
             case R.id.fourthFloorCheck: {
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    roomPreference[2] = '0';
-                    preferences.saveRoomPreference(new String(roomPreference));
-                } else {
-                    item.setChecked(true);
-                    roomPreference[2] = '1';
-                    preferences.saveRoomPreference(new String(roomPreference));
+                try {
+                    if (item.isChecked()) {
+                        item.setChecked(false);
+                        roomPreference[2] = '0';
+                        preferences.saveRoomPreference(new String(roomPreference));
+                    } else {
+                        item.setChecked(true);
+                        roomPreference[2] = '1';
+                        preferences.saveRoomPreference(new String(roomPreference));
+                    }
+                    connectTheViews();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
-                connectTheViews();
                 break;
             }
             case R.id.fifthFloorCheck: {
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    roomPreference[3] = '0';
-                    preferences.saveRoomPreference(new String(roomPreference));
-                } else {
-                    item.setChecked(true);
-                    roomPreference[3] = '1';
-                    preferences.saveRoomPreference(new String(roomPreference));
-                }
-                connectTheViews();
-                break;
-            }
+                try {
+                    if (item.isChecked()) {
+                        item.setChecked(false);
+                        roomPreference[3] = '0';
+                        preferences.saveRoomPreference(new String(roomPreference));
+                    } else {
+                        item.setChecked(true);
+                        roomPreference[3] = '1';
+                        preferences.saveRoomPreference(new String(roomPreference));
+                    }
+                    connectTheViews();
 
+                } catch (Exception e) {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+            break;
         }
         return false;
     }
@@ -434,6 +450,7 @@ public class RoomPopper extends AppCompatActivity {
                     break;
                 case 3:
                     text = (TextView) findViewById(R.id.fifthFloorText);
+                    break;
             }
 
             if (floorClick[i] == 1) {

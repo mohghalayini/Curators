@@ -13,6 +13,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
             android:name=".RoomPopper"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +23,7 @@
         </activity>
         <activity
             android:name=".AdminData"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait" />
     </application>
 

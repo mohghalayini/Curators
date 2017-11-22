@@ -134,7 +134,7 @@ public class AdminData extends AppCompatActivity {
         } else {
             Intent begone = new Intent(thisthing, RoomPopper.class);
             startActivity(begone);
-            Toast.makeText(thisthing, "Still locked come back in:"+Long.toString((300000-millisecondsLeft)/1000)+"seconds", Toast.LENGTH_SHORT).show();
+            Toast.makeText(thisthing, "Still locked come back in:" + Long.toString((300000 - millisecondsLeft) / 1000) + "seconds", Toast.LENGTH_SHORT).show();
         }
     }
 
