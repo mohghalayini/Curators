@@ -72,7 +72,7 @@ public class AdminData extends AppCompatActivity {
         }
 
 
-        initialiseListeners();
+
     }
 
 
@@ -266,7 +266,7 @@ public class AdminData extends AppCompatActivity {
                 adminListView[1] = (ListView) findViewById(R.id.roomSize);
                 adminListView[2] = (ListView) findViewById(R.id.roomOcc);
                 adminListView[3] = (ListView) findViewById(R.id.roomStatus);
-
+                initialiseListeners();
             }
         }).start();
     }
