@@ -42,7 +42,7 @@ public class AdminData extends AppCompatActivity {
     int counter = 3;
     long timeDifference = 0;
     long lastRefresh = 0;
-
+    Intent begone ;
     SharedPreferenceHelper statusesAndPreferences;
 
     @Override
@@ -52,6 +52,7 @@ public class AdminData extends AppCompatActivity {
         initialiseRefresher();
         statusesAndPreferences = new SharedPreferenceHelper(this);
         headerHolder = (LinearLayout) findViewById(R.id.headerHolder);
+        begone= new Intent(thisthing, RoomPopper.class);
     }
 
     @Override
@@ -66,7 +67,8 @@ public class AdminData extends AppCompatActivity {
                 initialiseContainers();
                 login();
             } else {
-                Toast.makeText(thisthing, "Failed to fetch the rooms, please make sure you're connected to the internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(thisthing, "Cannot access Admin page if you are not connected to the internet", Toast.LENGTH_SHORT).show();
+                startActivity(begone);
             }
             refresher.setRefreshing(false);
         }
@@ -104,7 +106,6 @@ public class AdminData extends AppCompatActivity {
                         } else {
                             counter--;
                             if (counter == 0) {
-                                Intent begone = new Intent(thisthing, RoomPopper.class);
                                 startActivity(begone);
                                 statusesAndPreferences.saveLockTimer(System.currentTimeMillis());
                                 Toast.makeText(thisthing, "Login locked try again in 5 minutes", Toast.LENGTH_SHORT).show();
@@ -120,7 +121,6 @@ public class AdminData extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         ((ViewGroup) findViewById(R.id.mainlayout)).setVisibility(View.VISIBLE);
                         dialog.cancel();
-                        Intent begone = new Intent(thisthing, RoomPopper.class);
                         startActivity(begone);
                     }
                 });
@@ -132,7 +132,6 @@ public class AdminData extends AppCompatActivity {
                 headerHolder.setVisibility(View.VISIBLE);
             }
         } else {
-            Intent begone = new Intent(thisthing, RoomPopper.class);
             startActivity(begone);
             Toast.makeText(thisthing, "Still locked come back in:" + Long.toString((300000 - millisecondsLeft) / 1000) + "seconds", Toast.LENGTH_SHORT).show();
         }
