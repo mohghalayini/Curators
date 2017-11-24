@@ -14,9 +14,33 @@
         android:id="@+id/about"
         app:showAsAction="never"
         android:title="@string/about_this_app" />
-    <item
-        android:id="@+id/settings"
-        android:title="@string/settings_and_preferences"
-        app:showAsAction="never" />
 
+    <group android:checkableBehavior="all">
+        <item
+            android:id="@+id/secondFloorCheck"
+            android:checkable="true"
+            android:enabled="true"
+            android:title="@string/show_2nd_floor"
+            android:visible="true" />
+        <item
+            android:id="@+id/thirdFloorCheck"
+            android:checkable="true"
+            android:enabled="true"
+            android:title="@string/show_3rd_floor"
+            android:visible="true" />
+      <item
+            android:id="@+id/fourthFloorCheck"
+            android:checkable="true"
+            android:enabled="true"
+            android:title="@string/show_4th_floor"
+            android:visible="true" />
+
+        <item
+            android:id="@+id/fifthFloorCheck"
+            android:checkable="true"
+            android:enabled="true"
+            android:title="@string/show_5th_floor"
+            android:visible="true" />
+
+    </group>
 </menu>
