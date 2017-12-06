@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -26,11 +28,14 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RoomPopper extends AppCompatActivity {
     ListView[] listViews = new ListView[20];
     int floorClick[] = {0, 0, 0, 0};
     String[] allRooms;
+    Map map = new HashMap();
     int heights[] = {0, 0, 0, 0};
     long timeDifference = 0;
     long lastRefresh = 0;
@@ -87,6 +92,7 @@ public class RoomPopper extends AppCompatActivity {
             String roomCapacity;
             String nickname;
             String roomStatus;
+            String id;
             for (int i = 0; i < allRooms.length; i++) {
                 String str = allRooms[i];
                 try {
@@ -98,11 +104,12 @@ public class RoomPopper extends AppCompatActivity {
                     str = str.substring(str.indexOf(";") + 1, str.length());
                     roomStatus = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     str = str.substring(str.indexOf(";") + 1, str.length());
+                    id = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     str = str.substring(str.indexOf(";") + 1, str.length());
                     nickname = str.substring(str.indexOf(":") + 1, str.indexOf(";"));
                     int floor = Integer.parseInt(actualRoom.substring(0, 1)) - 2;
 
-                    sort(actualRoom, roomCurrentSize, roomCapacity, floor, roomStatus, nickname);
+                    sort(actualRoom, roomCurrentSize, roomCapacity, floor, roomStatus, nickname, id);
                 } catch (Exception e) {
                 }
             }
@@ -110,8 +117,8 @@ public class RoomPopper extends AppCompatActivity {
         }
     }
 
-    public void sort(String Room, String Size, String Capacity, int floor, String status, String nickname) {
-
+    public void sort(String Room, String Size, String Capacity, int floor, String status, String nickname, String id) {
+        map.put( "Room: " + Room + "-" + nickname,id);
         float size = Integer.parseInt(Size);
         float capacity = Integer.parseInt(Capacity);
         float ratio = 0;
@@ -297,6 +304,7 @@ public class RoomPopper extends AppCompatActivity {
                 floorTexts[1] = (TextView) findViewById(R.id.thirdFloorText);
                 floorTexts[2] = (TextView) findViewById(R.id.fourthFloorText);
                 floorTexts[3] = (TextView) findViewById(R.id.fifthFloorText);
+                initialiseListeners();
             }
         }).start();
 
@@ -312,6 +320,7 @@ public class RoomPopper extends AppCompatActivity {
                         floorContainer.get(i).add(new ArrayList<String>());
                     }
                 }
+
             }
         }).start();
     }
@@ -484,5 +493,30 @@ public class RoomPopper extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void initialiseListeners() {
+        for (int i = 0; i < listViews.length; i++) {
+            listViews[i].setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+                    try {
+                        Intent detailedInfoIntent= new Intent(RoomPopper.this, Detailed.class);
+                        detailedInfoIntent.putExtra("id",String.valueOf(map.get(arg0.getAdapter().getItem(position).toString())));
+                        if(isNetworkAvailable())
+                        startActivity(detailedInfoIntent);
+                        else {//Toast.makeText(RoomPopper.this, "uh oh spaghettios :( \n" +
+                                //"Could not fetch detailed information at this time, check your internet connection.", Toast.LENGTH_SHORT).show();
+                            Toast toast = Toast.makeText(RoomPopper.this, "uh oh spaghettios :( \n" +
+                                    "Could not fetch detailed information at this time, check your internet connection.", Toast.LENGTH_SHORT);
+                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                            if( v != null) v.setGravity(Gravity.CENTER);
+                            toast.show();}
+
+                    } catch (Exception e) {
+                    }
+                }
+            });
+        }
     }
 }

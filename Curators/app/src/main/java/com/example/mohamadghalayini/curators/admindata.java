@@ -382,6 +382,7 @@ public class AdminData extends AppCompatActivity {
         });
     }
 
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
